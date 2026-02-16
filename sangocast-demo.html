@@ -1,0 +1,504 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SANGOCAST - Network Mode Demo</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      min-height: 100vh;
+      padding: 20px;
+      color: #333;
+    }
+
+    .container {
+      max-width: 800px;
+      margin: 0 auto;
+    }
+
+    .header {
+      background: white;
+      border-radius: 16px;
+      padding: 24px;
+      margin-bottom: 20px;
+      box-shadow: 0 10px 40px rgba(0, 0, 0, 0.1);
+    }
+
+    .title {
+      font-size: 32px;
+      font-weight: 700;
+      color: #667eea;
+      margin-bottom: 8px;
+    }
+
+    .subtitle {
+      font-size: 16px;
+      color: #666;
+    }
+
+    .network-status-bar {
+      background: white;
+      border-radius: 12px;
+      padding: 16px 20px;
+      margin-bottom: 20px;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    #network-mode-indicator {
+      display: flex;
+      align-items: center;
+      font-weight: 600;
+      font-size: 16px;
+    }
+
+    .settings-button {
+      background: #667eea;
+      color: white;
+      border: none;
+      padding: 10px 20px;
+      border-radius: 8px;
+      cursor: pointer;
+      font-weight: 600;
+      transition: all 0.2s;
+    }
+
+    .settings-button:hover {
+      background: #5568d3;
+      transform: translateY(-1px);
+    }
+
+    .settings-panel {
+      background: white;
+      border-radius: 16px;
+      padding: 24px;
+      box-shadow: 0 10px 40px rgba(0, 0, 0, 0.1);
+      display: none;
+      animation: slideIn 0.3s ease-out;
+    }
+
+    .settings-panel.active {
+      display: block;
+    }
+
+    @keyframes slideIn {
+      from {
+        opacity: 0;
+        transform: translateY(-10px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    .settings-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 24px;
+      padding-bottom: 16px;
+      border-bottom: 2px solid #f3f4f6;
+    }
+
+    .settings-title {
+      font-size: 24px;
+      font-weight: 700;
+      color: #333;
+    }
+
+    .close-button {
+      background: #f3f4f6;
+      border: none;
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 20px;
+      transition: all 0.2s;
+    }
+
+    .close-button:hover {
+      background: #e5e7eb;
+    }
+
+    .mode-selector {
+      margin-bottom: 24px;
+    }
+
+    .mode-label {
+      font-size: 14px;
+      font-weight: 600;
+      color: #666;
+      margin-bottom: 12px;
+      display: block;
+    }
+
+    .mode-options {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+      gap: 12px;
+    }
+
+    .mode-option {
+      background: #f9fafb;
+      border: 2px solid #e5e7eb;
+      border-radius: 12px;
+      padding: 16px;
+      cursor: pointer;
+      transition: all 0.2s;
+      text-align: center;
+    }
+
+    .mode-option:hover {
+      border-color: #667eea;
+      transform: translateY(-2px);
+      box-shadow: 0 4px 12px rgba(102, 126, 234, 0.15);
+    }
+
+    .mode-option.active {
+      background: #667eea;
+      border-color: #667eea;
+      color: white;
+    }
+
+    .mode-icon {
+      font-size: 32px;
+      margin-bottom: 8px;
+    }
+
+    .mode-name {
+      font-weight: 600;
+      font-size: 14px;
+      margin-bottom: 4px;
+    }
+
+    .mode-desc {
+      font-size: 12px;
+      opacity: 0.7;
+    }
+
+    #current-mode-info {
+      margin-bottom: 24px;
+    }
+
+    .status-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 16px;
+      margin-bottom: 24px;
+    }
+
+    .status-card {
+      background: #f9fafb;
+      border-radius: 12px;
+      padding: 16px;
+    }
+
+    .status-label {
+      font-size: 12px;
+      font-weight: 600;
+      color: #666;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      margin-bottom: 8px;
+    }
+
+    .status-value {
+      font-size: 20px;
+      font-weight: 700;
+      color: #333;
+    }
+
+    .actions {
+      display: flex;
+      gap: 12px;
+    }
+
+    .action-button {
+      flex: 1;
+      background: #f3f4f6;
+      border: none;
+      padding: 12px;
+      border-radius: 8px;
+      cursor: pointer;
+      font-weight: 600;
+      transition: all 0.2s;
+    }
+
+    .action-button:hover {
+      background: #e5e7eb;
+    }
+
+    .action-button.primary {
+      background: #667eea;
+      color: white;
+    }
+
+    .action-button.primary:hover {
+      background: #5568d3;
+    }
+
+    .demo-section {
+      background: white;
+      border-radius: 16px;
+      padding: 24px;
+      margin-top: 20px;
+      box-shadow: 0 10px 40px rgba(0, 0, 0, 0.1);
+    }
+
+    .demo-title {
+      font-size: 20px;
+      font-weight: 700;
+      margin-bottom: 16px;
+      color: #333;
+    }
+
+    .log {
+      background: #1e293b;
+      color: #e2e8f0;
+      border-radius: 8px;
+      padding: 16px;
+      font-family: 'Monaco', 'Menlo', monospace;
+      font-size: 13px;
+      max-height: 300px;
+      overflow-y: auto;
+    }
+
+    .log-entry {
+      margin-bottom: 8px;
+      line-height: 1.5;
+    }
+
+    .log-time {
+      color: #94a3b8;
+      margin-right: 8px;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <!-- Header -->
+    <div class="header">
+      <div class="title">⏰ SANGOCAST</div>
+      <div class="subtitle">Scripture Clock - Network Management System</div>
+    </div>
+
+    <!-- Network Status Bar -->
+    <div class="network-status-bar">
+      <div id="network-mode-indicator">
+        <span style="color: #3b82f6; font-size: 1.2em;">🔵</span>
+        <span style="margin-left: 8px;">Initializing...</span>
+      </div>
+      <button class="settings-button" onclick="toggleSettings()">
+        ⚙️ Settings
+      </button>
+    </div>
+
+    <!-- Settings Panel -->
+    <div id="network-settings-panel" class="settings-panel">
+      <div class="settings-header">
+        <div class="settings-title">Network Settings</div>
+        <button class="close-button" onclick="toggleSettings()">×</button>
+      </div>
+
+      <!-- Current Mode Info -->
+      <div id="current-mode-info"></div>
+
+      <!-- Mode Selector -->
+      <div class="mode-selector">
+        <label class="mode-label">Select Network Mode</label>
+        <div class="mode-options">
+          <div class="mode-option" data-mode="AUTO" onclick="selectMode('AUTO')">
+            <div class="mode-icon">🔵</div>
+            <div class="mode-name">Auto</div>
+            <div class="mode-desc">Adapt automatically</div>
+          </div>
+          <div class="mode-option" data-mode="ONLINE_LIVE" onclick="selectMode('ONLINE_LIVE')">
+            <div class="mode-icon">🟢</div>
+            <div class="mode-name">Live</div>
+            <div class="mode-desc">Every 1 hour</div>
+          </div>
+          <div class="mode-option" data-mode="ONLINE_SMART" onclick="selectMode('ONLINE_SMART')">
+            <div class="mode-icon">🟡</div>
+            <div class="mode-name">Smart</div>
+            <div class="mode-desc">Every 6 hours</div>
+          </div>
+          <div class="mode-option" data-mode="OFFLINE" onclick="selectMode('OFFLINE')">
+            <div class="mode-icon">🔴</div>
+            <div class="mode-name">Offline</div>
+            <div class="mode-desc">Cache only</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Status Grid -->
+      <div class="status-grid">
+        <div class="status-card">
+          <div class="status-label">Connection</div>
+          <div class="status-value" id="status-online">-</div>
+        </div>
+        <div class="status-card">
+          <div class="status-label">Speed</div>
+          <div class="status-value" id="status-speed">-</div>
+        </div>
+        <div class="status-card">
+          <div class="status-label">Battery</div>
+          <div class="status-value" id="status-battery">-</div>
+        </div>
+      </div>
+
+      <!-- Actions -->
+      <div class="actions">
+        <button class="action-button primary" onclick="recheckNetwork()">
+          🔄 Recheck Network
+        </button>
+        <button class="action-button" onclick="showStatus()">
+          📊 View Full Status
+        </button>
+      </div>
+    </div>
+
+    <!-- Demo Section -->
+    <div class="demo-section">
+      <div class="demo-title">📋 Network Activity Log</div>
+      <div class="log" id="activity-log"></div>
+    </div>
+  </div>
+
+  <script src="sangocast-network-manager.js"></script>
+  <script>
+    // UI Controller
+    const UIController = {
+      log: [],
+
+      init() {
+        this.addLog('System started');
+        this.updateStatusDisplay();
+        
+        // Listen for network changes
+        SangocastNetworkManager.addChangeListener((status) => {
+          this.addLog(`Mode changed to ${status.mode}`);
+          this.updateStatusDisplay();
+        });
+
+        // Update mode selector
+        this.updateModeSelector();
+      },
+
+      addLog(message) {
+        const time = new Date().toLocaleTimeString();
+        this.log.unshift({ time, message });
+        if (this.log.length > 20) this.log.pop();
+        
+        const logElement = document.getElementById('activity-log');
+        if (logElement) {
+          logElement.innerHTML = this.log.map(entry => 
+            `<div class="log-entry"><span class="log-time">[${entry.time}]</span>${entry.message}</div>`
+          ).join('');
+        }
+      },
+
+      updateStatusDisplay() {
+        const status = SangocastNetworkManager.getStatus();
+        
+        document.getElementById('status-online').textContent = 
+          status.isOnline ? '✅ Online' : '❌ Offline';
+        
+        document.getElementById('status-speed').textContent = 
+          status.connectionSpeed.charAt(0).toUpperCase() + status.connectionSpeed.slice(1);
+        
+        if (status.batteryLevel !== undefined) {
+          const batteryPercent = Math.round(status.batteryLevel * 100);
+          const charging = status.batteryCharging ? ' ⚡' : '';
+          document.getElementById('status-battery').textContent = 
+            `${batteryPercent}%${charging}`;
+        } else {
+          document.getElementById('status-battery').textContent = 'N/A';
+        }
+      },
+
+      updateModeSelector() {
+        const status = SangocastNetworkManager.getStatus();
+        const options = document.querySelectorAll('.mode-option');
+        
+        options.forEach(option => {
+          const mode = option.getAttribute('data-mode');
+          if (mode === status.currentMode) {
+            option.classList.add('active');
+          } else {
+            option.classList.remove('active');
+          }
+        });
+      }
+    };
+
+    // Global functions for UI
+    function toggleSettings() {
+      const panel = document.getElementById('network-settings-panel');
+      panel.classList.toggle('active');
+      
+      if (panel.classList.contains('active')) {
+        UIController.updateStatusDisplay();
+        UIController.updateModeSelector();
+      }
+    }
+
+    function selectMode(modeName) {
+      SangocastNetworkManager.setMode(modeName);
+      UIController.addLog(`User selected ${modeName} mode`);
+      UIController.updateModeSelector();
+    }
+
+    async function recheckNetwork() {
+      UIController.addLog('Rechecking network conditions...');
+      const status = await SangocastNetworkManager.forceRecheck();
+      UIController.updateStatusDisplay();
+      UIController.addLog(`Recheck complete: ${status.activeMode}`);
+    }
+
+    function showStatus() {
+      const status = SangocastNetworkManager.getStatus();
+      console.log('Full Network Status:', status);
+      alert(JSON.stringify(status, null, 2));
+    }
+
+    // Simulate network activity for demo
+    function simulateNetworkActivity() {
+      const activities = [
+        'Scripture fetched successfully',
+        'Cache updated',
+        'Background sync completed',
+        'Checking for updates',
+        'Content refreshed'
+      ];
+      
+      setInterval(() => {
+        const activity = activities[Math.floor(Math.random() * activities.length)];
+        UIController.addLog(activity);
+      }, 10000);
+    }
+
+    // Initialize UI when manager is ready
+    document.addEventListener('DOMContentLoaded', () => {
+      setTimeout(() => {
+        UIController.init();
+        simulateNetworkActivity();
+      }, 1000);
+    });
+  </script>
+</body>
+</html>
