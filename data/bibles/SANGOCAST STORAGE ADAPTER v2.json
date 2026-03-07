@@ -1,0 +1,521 @@
+
+ /**
+ * SANGOCAST STORAGE ADAPTER v2.0
+ * Multi‑environment storage with a consistent Promise‑based API.
+ * Supports: Browser (IndexedDB / localStorage), Node.js (file system), In‑Memory fallback.
+ *
+ * Improvements:
+ * - Real Node.js adapter using fs
+ * - All adapters store strings only → uniform data handling
+ * - IndexedDB race condition fixed, version upgrade support
+ * - Proper error handling (no unhandled rejections)
+ * - keys() method to list stored keys
+ * - clearAll() works for all adapters
+ * - Configurable adapter selection and prefix
+ * - TypeScript‑ready JSDoc comments
+ */
+
+(function (global, factory) {
+  typeof exports === 'object' && typeof module !== 'undefined'
+    ? module.exports = factory()
+    : typeof define === 'function' && define.amd
+      ? define(factory)
+      : (global.SangocastStorage = factory());
+}(typeof window !== 'undefined' ? window : global, function () {
+  'use strict';
+
+  // =========================================================================
+  // 1. Base Adapter Interface (all methods return Promise)
+  // =========================================================================
+
+  /**
+   * @typedef {Object} StorageAdapter
+   * @property {(key: string) => Promise<string|null>} getItem   - returns null if not found
+   * @property {(key: string, value: string) => Promise<boolean>} setItem - true on success
+   * @property {(key: string) => Promise<boolean>} removeItem
+   * @property {(prefix?: string) => Promise<string[]>} keys - returns all keys matching prefix
+   * @property {() => Promise<void>} [close] - optional cleanup (for IndexedDB, file handles)
+   */
+
+  // =========================================================================
+  // 2. Individual Adapters
+  // =========================================================================
+
+  // -------------------------------------------------------------------------
+  // Browser localStorage (already string‑only)
+  // -------------------------------------------------------------------------
+  const localStorageAdapter = {
+    async getItem(key) {
+      try {
+        return localStorage.getItem(key); // returns null if missing
+      } catch (e) {
+        console.error('[Storage] localStorage.getItem error:', e);
+        return null;
+      }
+    },
+    async setItem(key, value) {
+      try {
+        localStorage.setItem(key, value);
+        return true;
+      } catch (e) {
+        console.error('[Storage] localStorage.setItem error:', e);
+        return false;
+      }
+    },
+    async removeItem(key) {
+      try {
+        localStorage.removeItem(key);
+        return true;
+      } catch (e) {
+        console.error('[Storage] localStorage.removeItem error:', e);
+        return false;
+      }
+    },
+    async keys(prefix = '') {
+      try {
+        return Object.keys(localStorage).filter(k => k.startsWith(prefix));
+      } catch (e) {
+        console.error('[Storage] localStorage.keys error:', e);
+        return [];
+      }
+    }
+  };
+
+  // -------------------------------------------------------------------------
+  // Browser IndexedDB (with connection caching, version support, string‑only)
+  // -------------------------------------------------------------------------
+  class IndexedDBAdapter {
+    constructor(dbName = 'SangocastBibleDB', version = 1, storeName = 'storage') {
+      this.dbName = dbName;
+      this.version = version;
+      this.storeName = storeName;
+      this._dbPromise = null; // cache the connection promise
+    }
+
+    // Internal: get or open database (returns a Promise<IDBDatabase>)
+    _getDB() {
+      if (this._dbPromise) return this._dbPromise;
+
+      this._dbPromise = new Promise((resolve, reject) => {
+        if (!window.indexedDB) {
+          reject(new Error('IndexedDB not supported'));
+          return;
+        }
+
+        const request = window.indexedDB.open(this.dbName, this.version);
+
+        request.onupgradeneeded = (event) => {
+          const db = event.target.result;
+          if (!db.objectStoreNames.contains(this.storeName)) {
+            // create store with auto-increment if you need keys; here we use out-of-line keys
+            db.createObjectStore(this.storeName);
+          }
+          // You can add migration logic here based on event.oldVersion
+        };
+
+        request.onsuccess = (event) => {
+          const db = event.target.result;
+          // Handle unexpected close (e.g., user clearing storage)
+          db.onclose = () => {
+            this._dbPromise = null; // force re‑open next time
+          };
+          db.onversionchange = () => {
+            db.close();
+            this._dbPromise = null;
+          };
+          resolve(db);
+        };
+
+        request.onerror = (event) => {
+          this._dbPromise = null;
+          reject(event.target.error);
+        };
+      });
+
+      return this._dbPromise;
+    }
+
+    async getItem(key) {
+      try {
+        const db = await this._getDB();
+        return new Promise((resolve) => {
+          const tx = db.transaction(this.storeName, 'readonly');
+          const store = tx.objectStore(this.storeName);
+          const request = store.get(key);
+          request.onsuccess = () => resolve(request.result); // can be undefined -> null
+          request.onerror = () => {
+            console.error('[Storage] IndexedDB getItem error:', request.error);
+            resolve(null);
+          };
+        });
+      } catch (e) {
+        console.error('[Storage] IndexedDB getItem fatal:', e);
+        return null;
+      }
+    }
+
+    async setItem(key, value) {
+      try {
+        const db = await this._getDB();
+        return new Promise((resolve) => {
+          const tx = db.transaction(this.storeName, 'readwrite');
+          const store = tx.objectStore(this.storeName);
+          const request = store.put(value, key); // value must be string (we enforce it in public API)
+          request.onsuccess = () => resolve(true);
+          request.onerror = () => {
+            console.error('[Storage] IndexedDB setItem error:', request.error);
+            resolve(false);
+          };
+        });
+      } catch (e) {
+        console.error('[Storage] IndexedDB setItem fatal:', e);
+        return false;
+      }
+    }
+
+    async removeItem(key) {
+      try {
+        const db = await this._getDB();
+        return new Promise((resolve) => {
+          const tx = db.transaction(this.storeName, 'readwrite');
+          const store = tx.objectStore(this.storeName);
+          const request = store.delete(key);
+          request.onsuccess = () => resolve(true);
+          request.onerror = () => {
+            console.error('[Storage] IndexedDB removeItem error:', request.error);
+            resolve(false);
+          };
+        });
+      } catch (e) {
+        console.error('[Storage] IndexedDB removeItem fatal:', e);
+        return false;
+      }
+    }
+
+    async keys(prefix = '') {
+      try {
+        const db = await this._getDB();
+        return new Promise((resolve, reject) => {
+          const tx = db.transaction(this.storeName, 'readonly');
+          const store = tx.objectStore(this.storeName);
+          const request = store.getAllKeys();
+          request.onsuccess = () => {
+            const allKeys = request.result;
+            resolve(allKeys.filter(k => k.startsWith(prefix)));
+          };
+          request.onerror = () => reject(request.error);
+        });
+      } catch (e) {
+        console.error('[Storage] IndexedDB keys error:', e);
+        return [];
+      }
+    }
+
+    async close() {
+      if (this._dbPromise) {
+        const db = await this._dbPromise;
+        db.close();
+        this._dbPromise = null;
+      }
+    }
+  }
+
+  // -------------------------------------------------------------------------
+  // Node.js file‑system adapter (stores data in a JSON file)
+  // -------------------------------------------------------------------------
+  const nodeFSAdapter = (() => {
+    // Only load fs if in Node.js environment
+    const isNode = typeof process !== 'undefined' && process.versions != null && process.versions.node != null;
+    let fs = null;
+    let path = null;
+    let storagePath = null;
+
+    if (isNode) {
+      try {
+        fs = require('fs');
+        path = require('path');
+        const os = require('os');
+        storagePath = path.join(os.tmpdir(), 'sangocast-storage.json'); // or use a configurable location
+      } catch (e) {
+        // fs not available – fallback will be handled by detection
+      }
+    }
+
+    // Helper: read the whole file, return object map
+    async function readFile() {
+      return new Promise((resolve) => {
+        if (!fs) return resolve({});
+        fs.readFile(storagePath, 'utf8', (err, data) => {
+          if (err) {
+            // File doesn't exist yet – treat as empty
+            if (err.code === 'ENOENT') return resolve({});
+            console.error('[Storage] NodeFS read error:', err);
+            return resolve({});
+          }
+          try {
+            resolve(JSON.parse(data));
+          } catch (e) {
+            console.error('[Storage] NodeFS parse error:', e);
+            resolve({});
+          }
+        });
+      });
+    }
+
+    // Helper: write object map to file
+    async function writeFile(map) {
+      return new Promise((resolve) => {
+        if (!fs) return resolve(false);
+        fs.writeFile(storagePath, JSON.stringify(map), 'utf8', (err) => {
+          if (err) {
+            console.error('[Storage] NodeFS write error:', err);
+            resolve(false);
+          } else {
+            resolve(true);
+          }
+        });
+      });
+    }
+
+    return {
+      async getItem(key) {
+        const map = await readFile();
+        return map[key] || null;
+      },
+      async setItem(key, value) {
+        const map = await readFile();
+        map[key] = value;
+        return writeFile(map);
+      },
+      async removeItem(key) {
+        const map = await readFile();
+        delete map[key];
+        return writeFile(map);
+      },
+      async keys(prefix = '') {
+        const map = await readFile();
+        return Object.keys(map).filter(k => k.startsWith(prefix));
+      }
+    };
+  })();
+
+  // -------------------------------------------------------------------------
+  // In‑memory fallback adapter (for environments with no persistent storage)
+  // -------------------------------------------------------------------------
+  const memoryAdapter = (() => {
+    const store = new Map();
+    return {
+      async getItem(key) {
+        return store.get(key) || null;
+      },
+      async setItem(key, value) {
+        store.set(key, value);
+        return true;
+      },
+      async removeItem(key) {
+        store.delete(key);
+        return true;
+      },
+      async keys(prefix = '') {
+        return Array.from(store.keys()).filter(k => k.startsWith(prefix));
+      }
+    };
+  })();
+
+  // =========================================================================
+  // 3. Environment Detection
+  // =========================================================================
+
+  /**
+   * Detects the best available storage backend.
+   * @param {Object} options
+   * @param {boolean} [options.preferLocalStorage=false] - force localStorage over IndexedDB
+   * @returns {StorageAdapter}
+   */
+  function detectAdapter(options = {}) {
+    // Node.js
+    if (typeof process !== 'undefined' && process.versions != null && process.versions.node != null) {
+      if (nodeFSAdapter.getItem) { // crude check that fs is available
+        console.log('[Storage] Using Node.js file system adapter');
+        return nodeFSAdapter;
+      }
+      console.warn('[Storage] Node.js fs not available, falling back to memory');
+      return memoryAdapter;
+    }
+
+    // Browser
+    if (typeof window !== 'undefined') {
+      // Prefer IndexedDB unless forced to localStorage
+      if (!options.preferLocalStorage && window.indexedDB) {
+        // Test if IndexedDB actually works (private mode may throw)
+        try {
+          const testRequest = window.indexedDB.open('__sangocast_test__');
+          testRequest.onerror = () => {
+            // If test fails, fall through to localStorage or memory
+          };
+          testRequest.onsuccess = (e) => {
+            e.target.result.close();
+            window.indexedDB.deleteDatabase('__sangocast_test__');
+          };
+          // If we get here without exception, assume it's usable
+          console.log('[Storage] Using IndexedDB');
+          return new IndexedDBAdapter(); // you can pass custom db name/version later
+        } catch (e) {
+          console.warn('[Storage] IndexedDB test failed, falling back:', e);
+        }
+      }
+      if (window.localStorage) {
+        console.log('[Storage] Using localStorage');
+        return localStorageAdapter;
+      }
+    }
+
+    // Final fallback
+    console.warn('[Storage] No persistent storage available – using in‑memory');
+    return memoryAdapter;
+  }
+
+  // =========================================================================
+  // 4. Main SangocastStorage Class
+  // =========================================================================
+
+  class SangocastStorage {
+    /**
+     * @param {Object} options
+     * @param {string} [options.prefix='sangocast_'] - key prefix for all operations
+     * @param {StorageAdapter} [options.adapter] - provide a custom adapter (overrides auto‑detect)
+     * @param {boolean} [options.preferLocalStorage=false] - if auto‑detecting, prefer localStorage
+     */
+    constructor(options = {}) {
+      this.prefix = options.prefix || 'sangocast_';
+      this._adapter = options.adapter || detectAdapter(options);
+    }
+
+    /**
+     * Change adapter at runtime (useful for testing).
+     * @param {StorageAdapter} adapter
+     */
+    setAdapter(adapter) {
+      this._adapter = adapter;
+    }
+
+    // Internal: apply prefix to key
+    _prefixKey(key) {
+      return this.prefix + key;
+    }
+
+    // -----------------------------------------------------------------------
+    // Core string‑based methods
+    // -----------------------------------------------------------------------
+
+    /**
+     * Retrieve a raw string value.
+     * @param {string} key
+     * @returns {Promise<string|null>}
+     */
+    async getItem(key) {
+      return this._adapter.getItem(this._prefixKey(key));
+    }
+
+    /**
+     * Store a raw string value.
+     * @param {string} key
+     * @param {string} value
+     * @returns {Promise<boolean>}
+     */
+    async setItem(key, value) {
+      if (typeof value !== 'string') {
+        console.warn('[Storage] setItem expects a string; use setJSON for objects');
+        return false;
+      }
+      return this._adapter.setItem(this._prefixKey(key), value);
+    }
+
+    /**
+     * Remove a key.
+     * @param {string} key
+     * @returns {Promise<boolean>}
+     */
+    async removeItem(key) {
+      return this._adapter.removeItem(this._prefixKey(key));
+    }
+
+    // -----------------------------------------------------------------------
+    // JSON helpers (auto‑stringify/parse)
+    // -----------------------------------------------------------------------
+
+    /**
+     * Retrieve and parse a JSON value.
+     * @param {string} key
+     * @returns {Promise<any>}
+     */
+    async getJSON(key) {
+      const raw = await this.getItem(key);
+      if (raw === null) return null;
+      try {
+        return JSON.parse(raw);
+      } catch (e) {
+        console.error('[Storage] JSON parse error for key', key, e);
+        return null;
+      }
+    }
+
+    /**
+     * Store a value as JSON.
+     * @param {string} key
+     * @param {*} obj
+     * @returns {Promise<boolean>}
+     */
+    async setJSON(key, obj) {
+      try {
+        const raw = JSON.stringify(obj);
+        return this.setItem(key, raw);
+      } catch (e) {
+        console.error('[Storage] JSON stringify error for key', key, e);
+        return false;
+      }
+    }
+
+    // -----------------------------------------------------------------------
+    // Utility methods
+    // -----------------------------------------------------------------------
+
+    /**
+     * List all stored keys (with the instance prefix already applied).
+     * @param {string} [prefix=''] - additional filter after the instance prefix
+     * @returns {Promise<string[]>}
+     */
+    async keys(prefix = '') {
+      const all = await this._adapter.keys(this.prefix + prefix);
+      // Remove the instance prefix from returned keys for cleaner API
+      return all.map(k => k.slice(this.prefix.length));
+    }
+
+    /**
+     * Remove all keys that start with the instance prefix.
+     * @returns {Promise<boolean>}
+     */
+    async clearAll() {
+      const keys = await this._adapter.keys(this.prefix);
+      for (const key of keys) {
+        await this._adapter.removeItem(key);
+      }
+      return true;
+    }
+
+    /**
+     * Close any open connections (if adapter supports it).
+     */
+    async close() {
+      if (this._adapter.close) {
+        await this._adapter.close();
+      }
+    }
+  }
+
+  // =========================================================================
+  // 5. Export
+  // =========================================================================
+
+  return SangocastStorage;
+}));

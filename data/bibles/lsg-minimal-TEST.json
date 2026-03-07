@@ -1,0 +1,91 @@
+{
+  "version": "LSG",
+  "books": [
+    {
+      "name": "Genesis",
+      "chapters": [
+        {
+          "chapter": 1,
+          "verses": [
+            {
+              "verse": 1,
+              "text": "Au commencement, Dieu créa les cieux et la terre."
+            },
+            {
+              "verse": 2,
+              "text": "La terre était informe et vide: il y avait des ténèbres à la surface de l'abîme, et l'esprit de Dieu se mouvait au-dessus des eaux."
+            },
+            {
+              "verse": 3,
+              "text": "Dieu dit: Que la lumière soit! Et la lumière fut."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "John",
+      "chapters": [
+        {
+          "chapter": 3,
+          "verses": [
+            {
+              "verse": 16,
+              "text": "Car Dieu a tant aimé le monde qu'il a donné son Fils unique, afin que quiconque croit en lui ne périsse point, mais qu'il ait la vie éternelle."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Psalms",
+      "chapters": [
+        {
+          "chapter": 23,
+          "verses": [
+            {
+              "verse": 1,
+              "text": "L'Éternel est mon berger: je ne manquerai de rien."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "1 Samuel",
+      "chapters": [
+        {
+          "chapter": 1,
+          "verses": [
+            {
+              "verse": 1,
+              "text": "Il y avait un homme de Ramathaïm Tsophim, de la montagne d'Éphraïm, nommé Elkana, fils de Jeroham, fils d'Élihu, fils de Thohu, fils de Tsuph, Éphratien."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Matthew",
+      "chapters": [
+        {
+          "chapter": 5,
+          "verses": [
+            {
+              "verse": 3,
+              "text": "Heureux les pauvres en esprit, car le royaume des cieux est à eux!"
+            },
+            {
+              "verse": 4,
+              "text": "Heureux les affligés, car ils seront consolés!"
+            },
+            {
+              "verse": 5,
+              "text": "Heureux les débonnaires, car ils hériteront la terre!"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
