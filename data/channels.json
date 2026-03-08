@@ -1,195 +1,234 @@
 {
   "channels": [
+
     {
-      "id": "daily-verse",
-      "name": "Daily Verse",
-      "description": "A Bible verse for each day of the year",
-      "type": "evergreen",
-      "category": "scripture",
-      "language": "en",
-      "region": null,
-      "tradition": "ecumenical",
-      "icon": "📖",
-      "color": "#667eea",
-      "author": "SANGOCAST Team",
-      "version": "1.0",
-      "requiresSubscription": false,
-      "isPremium": false,
-      "updateFrequency": "daily",
-      "contentCount": 365,
-      "content": [
-        {
-          "date": "2026-02-20",
-          "verse": "For God so loved the world that he gave his one and only Son, that whoever believes in him shall not perish but have eternal life.",
-          "reference": "John 3:16",
-          "translation": "NIV"
-        }
-      ],
-      "defaultContent": {
-        "verse": "Trust in the Lord with all your heart and lean not on your own understanding.",
-        "reference": "Proverbs 3:5",
-        "translation": "NIV"
+      "id": "SCR-EN-GL-HOPE",
+      "type": "SCR",
+      "metadata": {
+        "name": "Hope Verses",
+        "description": "Daily scriptures anchored in the hope we have in Christ — for every season of waiting, trial, and expectation.",
+        "tradition": "interconfessional",
+        "featured": true,
+        "author": "SangoCast Team — batous.kabuika@proton.me",
+        "icon": "🕊️",
+        "color": "#60a5fa"
+      },
+      "defaultSettings": {
+        "recommendedBible": "KJV"
       }
     },
+
     {
-      "id": "prayer-times",
-      "name": "Daily Prayer Times",
-      "description": "Traditional prayer times and liturgies",
-      "type": "evergreen",
-      "category": "prayer",
-      "language": "en",
-      "region": null,
-      "tradition": "ecumenical",
-      "icon": "🙏",
-      "color": "#10b981",
-      "requiresSubscription": false,
-      "isPremium": false,
-      "updateFrequency": "daily",
-      "content": []
+      "id": "SCR-EN-GL-PRAISE",
+      "type": "SCR",
+      "metadata": {
+        "name": "Praise & Worship",
+        "description": "Verses that call the soul to worship — Psalms, hymns, and spiritual songs celebrating the greatness of God.",
+        "tradition": "interconfessional",
+        "featured": true,
+        "author": "SangoCast Team — batous.kabuika@proton.me",
+        "icon": "🎵",
+        "color": "#f59e0b"
+      },
+      "defaultSettings": {
+        "recommendedBible": "KJV"
+      }
     },
+
     {
-      "id": "rosary-meditations",
-      "name": "Rosary Meditations",
-      "description": "Daily meditations for the Holy Rosary",
-      "type": "evergreen",
-      "category": "devotional",
-      "language": "en",
-      "region": null,
-      "tradition": "catholic",
-      "icon": "📿",
-      "color": "#8b5cf6",
-      "requiresSubscription": false,
-      "isPremium": false,
-      "updateFrequency": "daily",
-      "content": []
+      "id": "SCR-EN-GL-REPENT",
+      "type": "SCR",
+      "metadata": {
+        "name": "Repentance & Renewal",
+        "description": "Scriptures that lead the heart toward honest confession, true repentance, and the joy of restoration with God.",
+        "tradition": "interconfessional",
+        "featured": false,
+        "author": "SangoCast Team — batous.kabuika@proton.me",
+        "icon": "🙇",
+        "color": "#8b5cf6"
+      },
+      "defaultSettings": {
+        "recommendedBible": "KJV"
+      }
     },
+
     {
-      "id": "orthodox-calendar",
-      "name": "Orthodox Liturgical Calendar",
-      "description": "Feast days and readings from the Orthodox tradition",
-      "type": "evergreen",
-      "category": "worship",
-      "language": "en",
-      "region": null,
-      "tradition": "orthodox",
-      "icon": "☦️",
-      "color": "#f59e0b",
-      "requiresSubscription": false,
-      "isPremium": false,
-      "updateFrequency": "daily",
-      "content": []
+      "id": "SCR-EN-GL-LOVE",
+      "type": "SCR",
+      "metadata": {
+        "name": "God's Love & Emulation",
+        "description": "Verses revealing the depth of God's love and calling believers to reflect that love in daily life toward others.",
+        "tradition": "interconfessional",
+        "featured": true,
+        "author": "SangoCast Team — batous.kabuika@proton.me",
+        "icon": "❤️",
+        "color": "#ef4444"
+      },
+      "defaultSettings": {
+        "recommendedBible": "KJV"
+      }
     },
+
     {
-      "id": "live-worship",
-      "name": "Live Worship Services",
-      "description": "Stream live worship services from around the world",
-      "type": "live",
-      "category": "worship",
-      "language": "en",
-      "region": null,
-      "tradition": "ecumenical",
-      "icon": "🎤",
-      "color": "#ef4444",
-      "requiresSubscription": true,
-      "isPremium": false,
-      "updateFrequency": "live",
-      "content": []
+      "id": "SCR-EN-GL-COMFORT",
+      "type": "SCR",
+      "metadata": {
+        "name": "Comfort & Peace",
+        "description": "Scriptures for the weary, the grieving, and the anxious — words of divine comfort that carry the soul through hard places.",
+        "tradition": "interconfessional",
+        "featured": true,
+        "author": "SangoCast Team — batous.kabuika@proton.me",
+        "icon": "🤲",
+        "color": "#10b981"
+      },
+      "defaultSettings": {
+        "recommendedBible": "KJV"
+      }
     },
+
     {
-      "id": "christian-news",
-      "name": "Christian News Feed",
-      "description": "Latest news from Christian media outlets",
-      "type": "live",
-      "category": "news",
-      "language": "en",
-      "region": null,
-      "tradition": "ecumenical",
-      "icon": "📰",
-      "color": "#3b82f6",
-      "requiresSubscription": false,
-      "isPremium": false,
-      "updateFrequency": "hourly",
-      "content": []
+      "id": "SCR-EN-GL-0001",
+      "type": "SCR",
+      "metadata": {
+        "name": "Global Daily Scripture",
+        "description": "A Bible verse for each day of the year — balanced, accessible, and open to all.",
+        "tradition": "interconfessional",
+        "featured": true,
+        "author": "SangoCast Team — batous.kabuika@proton.me",
+        "icon": "📖",
+        "color": "#667eea"
+      },
+      "defaultSettings": {
+        "recommendedBible": "KJV"
+      }
     },
+
     {
-      "id": "easter-2026",
-      "name": "Easter 2026 Devotional",
-      "description": "40-day Lenten devotional leading to Easter Sunday",
-      "type": "event",
-      "category": "event",
-      "language": "en",
-      "region": null,
-      "tradition": "ecumenical",
-      "icon": "🌅",
-      "color": "#fbbf24",
-      "requiresSubscription": false,
-      "isPremium": false,
-      "eventDate": "2026-02-18",
-      "eventEndDate": "2026-04-05",
-      "downloadSize": 2500000,
-      "downloadUrl": "/api/events/easter-2026/download",
-      "updateFrequency": "event",
-      "contentCount": 40,
-      "content": []
+      "id": "SCR-EN-GL-PRAYER",
+      "type": "SCR",
+      "metadata": {
+        "name": "Daily Prayer Times",
+        "description": "Traditional prayer times and liturgies to anchor the day in worship.",
+        "tradition": "interconfessional",
+        "featured": false,
+        "author": "SangoCast Team — batous.kabuika@proton.me",
+        "icon": "🙏",
+        "color": "#10b981"
+      },
+      "defaultSettings": {
+        "recommendedBible": "KJV"
+      }
     },
+
     {
-      "id": "christmas-advent-2026",
-      "name": "Advent Calendar 2026",
-      "description": "Daily devotions for the Advent season",
-      "type": "event",
-      "category": "event",
-      "language": "en",
-      "region": null,
-      "tradition": "ecumenical",
-      "icon": "🎄",
-      "color": "#dc2626",
-      "requiresSubscription": false,
-      "isPremium": false,
-      "eventDate": "2026-11-29",
-      "eventEndDate": "2026-12-25",
-      "downloadSize": 1800000,
-      "downloadUrl": "/api/events/advent-2026/download",
-      "updateFrequency": "event",
-      "contentCount": 25,
-      "content": []
+      "id": "SCR-EN-CAT-ROSARY",
+      "type": "SCR",
+      "metadata": {
+        "name": "Rosary Meditations",
+        "description": "Daily meditations for the Holy Rosary — mysteries, prayers, and reflections.",
+        "tradition": "western_latin",
+        "featured": false,
+        "author": "SangoCast Team — batous.kabuika@proton.me",
+        "icon": "📿",
+        "color": "#8b5cf6"
+      },
+      "defaultSettings": {
+        "recommendedBible": "crampon"
+      }
     },
+
     {
-      "id": "sermon-series-faith",
-      "name": "Faith Foundations Series",
-      "description": "12-week sermon series on the basics of Christian faith",
-      "type": "event",
-      "category": "teaching",
-      "language": "en",
-      "region": null,
-      "tradition": "protestant",
-      "icon": "🎓",
-      "color": "#059669",
-      "requiresSubscription": false,
-      "isPremium": true,
-      "eventDate": "2026-01-01",
-      "eventEndDate": "2026-03-31",
-      "downloadSize": 52000000,
-      "downloadUrl": "/api/events/faith-series/download",
-      "updateFrequency": "event",
-      "contentCount": 12,
-      "content": []
+      "id": "LEC-EN-ORT-CAL",
+      "type": "LEC",
+      "metadata": {
+        "name": "Orthodox Liturgical Calendar",
+        "description": "Feast days and readings from the Orthodox tradition — Byzantine rite and Eastern calendar.",
+        "tradition": "eastern",
+        "featured": false,
+        "author": "SangoCast Team — batous.kabuika@proton.me",
+        "icon": "☦️",
+        "color": "#f59e0b"
+      },
+      "defaultSettings": {
+        "recommendedBible": "KJV"
+      }
     },
+
     {
-      "id": "psalms-devotional",
-      "name": "Psalms Daily Devotional",
-      "description": "Journey through all 150 Psalms with daily reflections",
-      "type": "evergreen",
-      "category": "devotional",
-      "language": "en",
-      "region": null,
-      "tradition": "ecumenical",
-      "icon": "🎵",
-      "color": "#7c3aed",
-      "requiresSubscription": false,
-      "isPremium": false,
-      "updateFrequency": "daily",
-      "contentCount": 150,
-      "content": []
+      "id": "EVT-EN-GL-EASTER26",
+      "type": "EVT",
+      "metadata": {
+        "name": "Easter 2026 Devotional",
+        "description": "40-day Lenten devotional leading to Easter Sunday — daily readings, prayers, and reflections.",
+        "tradition": "interconfessional",
+        "featured": true,
+        "author": "SangoCast Team — batous.kabuika@proton.me",
+        "icon": "🌅",
+        "color": "#fbbf24",
+        "eventDate": "2026-02-18",
+        "eventEndDate": "2026-04-05",
+        "contentCount": 40
+      },
+      "defaultSettings": {
+        "recommendedBible": "KJV"
+      }
+    },
+
+    {
+      "id": "EVT-EN-GL-ADVENT26",
+      "type": "EVT",
+      "metadata": {
+        "name": "Advent Calendar 2026",
+        "description": "Daily devotions for the Advent season — 25 days of scripture, silence, and joyful anticipation.",
+        "tradition": "interconfessional",
+        "featured": false,
+        "author": "SangoCast Team — batous.kabuika@proton.me",
+        "icon": "🎄",
+        "color": "#dc2626",
+        "eventDate": "2026-11-29",
+        "eventEndDate": "2026-12-25",
+        "contentCount": 25
+      },
+      "defaultSettings": {
+        "recommendedBible": "KJV"
+      }
+    },
+
+    {
+      "id": "EVT-EN-PRO-FAITH",
+      "type": "EVT",
+      "metadata": {
+        "name": "Faith Foundations Series",
+        "description": "12-week sermon series on the basics of Christian faith — solid ground for new and growing believers.",
+        "tradition": "reformed",
+        "featured": false,
+        "author": "SangoCast Team — batous.kabuika@proton.me",
+        "icon": "🎓",
+        "color": "#059669",
+        "contentCount": 12
+      },
+      "defaultSettings": {
+        "recommendedBible": "KJV"
+      }
+    },
+
+    {
+      "id": "SCR-EN-GL-PSALMS",
+      "type": "SCR",
+      "metadata": {
+        "name": "Psalms Daily Devotional",
+        "description": "Journey through all 150 Psalms with daily reflections — the full spectrum of human prayer.",
+        "tradition": "interconfessional",
+        "featured": false,
+        "author": "SangoCast Team — batous.kabuika@proton.me",
+        "icon": "🎵",
+        "color": "#7c3aed",
+        "contentCount": 150
+      },
+      "defaultSettings": {
+        "recommendedBible": "KJV"
+      }
     }
+
   ]
 }
