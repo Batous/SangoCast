@@ -367,7 +367,33 @@
       }
     }
 
-    /* Fullscreen mode */
+    /* Default-mode warning banner */
+    .defaults-banner {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      background: rgba(251, 191, 36, 0.92);   /* amber */
+      backdrop-filter: blur(6px);
+      color: #1f2937;
+      font-size: 13px;
+      font-weight: 600;
+      text-align: center;
+      padding: 7px 16px;
+      z-index: 8888;
+      letter-spacing: 0.3px;
+      display: none;                           /* hidden until triggered */
+    }
+
+    .defaults-banner.active {
+      display: block;
+      animation: fadeIn 0.6s ease;
+    }
+
+    /* Push header down so banner doesn't overlap it */
+    body.defaults-mode .header {
+      margin-top: 34px;
+    }
     .fullscreen .header {
       display: none;
     }
@@ -666,9 +692,41 @@
       const configured = localStorage.getItem('sangocast_configured');
       
       if (!configured || configured !== 'true') {
-        console.log('⚠️ Première utilisation - afficher wizard');
-        // Setup wizard will show automatically via setup-wizard.js
-        return;
+        console.log('⚠️ Première utilisation - tentative de chargement du wizard...');
+
+        // Try to verify channels.json is reachable before handing off to wizard.
+        // If it fails (offline, 404, server error), self-configure with defaults
+        // so life goes on without user intervention.
+        try {
+          const probe = await fetch('/data/channels.json', { method: 'HEAD' });
+          if (!probe.ok) throw new Error(`channels.json → HTTP ${probe.status}`);
+          // File reachable — let the wizard handle first-time setup normally.
+          console.log('✅ channels.json accessible — wizard activé');
+          return;
+        } catch (err) {
+          console.warn('⚠️ channels.json introuvable ou serveur hors ligne:', err.message);
+          console.log('🔧 Auto-configuration avec les valeurs par défaut...');
+
+          // Write safe defaults so the app runs as if configured.
+          localStorage.setItem('sangocast_configured',    'true');
+          localStorage.setItem('sangocast_channel_id',    'SCR-EN-GL-0001');
+          localStorage.setItem('sangocast_bible_versions', JSON.stringify(['KJV']));
+          localStorage.setItem('sangocast_age_mode',      'family_mode');
+          localStorage.setItem('sangocast_language',      'fr-FR');
+          localStorage.setItem('sangocast_tradition',     'protestant');
+          localStorage.setItem('sangocast_prayer_times',  JSON.stringify([6, 12, 18, 21]));
+          localStorage.setItem('sangocast_install_date',  new Date().toISOString());
+
+          // ── Visible warning ──────────────────────────────────────────
+          // Mark the session so displayChannelInfo() can show a badge.
+          // We use sessionStorage (not localStorage) so it clears itself
+          // the moment the user refreshes after channels.json is restored.
+          sessionStorage.setItem('sangocast_missing_channels', 'true');
+          // ─────────────────────────────────────────────────────────────
+
+          console.log('✅ Valeurs par défaut enregistrées — démarrage normal');
+          // Fall through — the rest of init() runs as normal.
+        }
       }
 
       // Load user configuration
@@ -1328,6 +1386,33 @@
       
       document.getElementById('channel-name').textContent = channelName;
       document.getElementById('channel-id').textContent = userConfig.channelId;
+
+      // ── Missing channels.json warning badge ──────────────────────────
+      // sessionStorage flag is set only when auto-defaults were applied.
+      // It disappears automatically on the next page refresh, so once
+      // channels.json is restored the badge is gone without manual cleanup.
+      const missingChannels = sessionStorage.getItem('sangocast_missing_channels');
+      const existingBadge   = document.getElementById('missing-channels-badge');
+
+      if (missingChannels && !existingBadge) {
+        const badge = document.createElement('div');
+        badge.id = 'missing-channels-badge';
+        badge.style.cssText = `
+          margin-top: 10px;
+          padding: 6px 10px;
+          background: rgba(251, 191, 36, 0.25);
+          border: 1px solid rgba(251, 191, 36, 0.6);
+          border-radius: 8px;
+          font-size: 12px;
+          color: #fef3c7;
+          line-height: 1.4;
+        `;
+        badge.innerHTML = '⚠️ <strong>channels.json</strong> introuvable<br>Plan de lecture par défaut actif';
+        document.getElementById('channel-info').appendChild(badge);
+        console.warn('🟡 Badge affiché: channels.json manquant');
+      }
+      // ─────────────────────────────────────────────────────────────────
+
       document.getElementById('channel-info').style.display = 'block';
     }
 
