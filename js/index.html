@@ -717,38 +717,7 @@
           localStorage.setItem('sangocast_prayer_times',  JSON.stringify([6, 12, 18, 21]));
           localStorage.setItem('sangocast_install_date',  new Date().toISOString());
 
-          // ── Dismiss the wizard that auto-started on script load ──────
-          // setup-wizard.js initialises itself when it loads (before init()
-          // runs), so we must explicitly close it after writing defaults.
-          // Try the module's own API first; fall back to hiding the DOM.
-          try {
-            if (typeof SangocastSetupWizard !== 'undefined') {
-              if (typeof SangocastSetupWizard.close   === 'function') SangocastSetupWizard.close();
-              if (typeof SangocastSetupWizard.hide    === 'function') SangocastSetupWizard.hide();
-              if (typeof SangocastSetupWizard.destroy === 'function') SangocastSetupWizard.destroy();
-              if (typeof SangocastSetupWizard.skip    === 'function') SangocastSetupWizard.skip();
-            }
-          } catch(wizErr) {
-            console.warn('Wizard API non disponible:', wizErr.message);
-          }
-
-          // Hard DOM fallback — hide any overlay the wizard may have created.
-          // Runs after a short tick to catch elements injected asynchronously.
-          setTimeout(() => {
-            const wizardSelectors = [
-              '#setup-wizard', '#wizard', '.setup-wizard', '.wizard-overlay',
-              '[id*="wizard"]', '[class*="wizard"]'
-            ];
-            wizardSelectors.forEach(sel => {
-              document.querySelectorAll(sel).forEach(el => {
-                el.style.display = 'none';
-                console.log('🧹 Wizard masqué:', el.id || el.className);
-              });
-            });
-            // Restore body scroll in case the wizard locked it
-            document.body.style.overflow = '';
-          }, 50);
-          // ─────────────────────────────────────────────────────────────
+          // ── Visible warning ──────────────────────────────────────────
           // Mark the session so displayChannelInfo() can show a badge.
           // We use sessionStorage (not localStorage) so it clears itself
           // the moment the user refreshes after channels.json is restored.
