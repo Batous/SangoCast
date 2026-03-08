@@ -1,0 +1,1013 @@
+﻿{
+  "version": "1.0.0",
+  "lastUpdate": "2026-02-24T18:00:00Z",
+  "yearsIncluded": ["2026", "2027", "2028", "2029", "2030"],
+  "traditions": ["western_latin", "reformed", "eastern"],
+  "colors": {
+    "white": "Purity, joy, glory (Christmas, Easter, major feasts)",
+    "red": "Holy Spirit, martyrs, passion (Pentecost, Palm Sunday)",
+    "purple": "Penance, preparation (Advent, Lent)",
+    "green": "Growth, hope (Ordinary Time)",
+    "gold": "Celebration, majesty (high holy days)",
+    "black": "Mourning (Good Friday)"
+  },
+  "2026": {
+    "western_latin": {
+      "2026-01-01": {
+        "name": "Solemnity of Mary, Mother of God",
+        "season": "Christmas",
+        "color": "white",
+        "reading": {
+          "version": "any",
+          "book": "Luke",
+          "chapter": 2,
+          "verses": [16, 17, 18, 19, 20, 21]
+        }
+      },
+      "2026-01-06": {
+        "name": "Epiphany",
+        "season": "Christmas",
+        "color": "white",
+        "reading": {
+          "version": "any",
+          "book": "Matthew",
+          "chapter": 2,
+          "verses": [1, 2, 9, 10, 11]
+        }
+      },
+      "2026-02-18": {
+        "name": "Ash Wednesday",
+        "season": "Lent",
+        "color": "purple",
+        "reading": {
+          "version": "any",
+          "book": "Matthew",
+          "chapter": 6,
+          "verses": [1, 2, 3, 4, 5, 6]
+        }
+      },
+      "2026-04-05": {
+        "name": "Palm Sunday",
+        "season": "Holy Week",
+        "color": "red",
+        "reading": {
+          "version": "any",
+          "book": "Matthew",
+          "chapter": 21,
+          "verses": [1, 2, 3, 4, 5, 6, 7, 8, 9]
+        }
+      },
+      "2026-04-09": {
+        "name": "Holy Thursday",
+        "season": "Holy Week",
+        "color": "white",
+        "reading": {
+          "version": "any",
+          "book": "John",
+          "chapter": 13,
+          "verses": [1, 2, 3, 4, 5]
+        }
+      },
+      "2026-04-10": {
+        "name": "Good Friday",
+        "season": "Holy Week",
+        "color": "black",
+        "reading": {
+          "version": "any",
+          "book": "John",
+          "chapter": 19,
+          "verses": [17, 18, 19, 25, 26, 27, 28, 29, 30]
+        }
+      },
+      "2026-04-11": {
+        "name": "Holy Saturday",
+        "season": "Holy Week",
+        "color": "purple",
+        "reading": {
+          "version": "any",
+          "book": "Matthew",
+          "chapter": 27,
+          "verses": [57, 58, 59, 60]
+        }
+      },
+      "2026-04-12": {
+        "name": "Easter Sunday",
+        "season": "Easter",
+        "color": "white",
+        "reading": {
+          "version": "any",
+          "book": "John",
+          "chapter": 20,
+          "verses": [1, 2, 11, 12, 13, 14, 15, 16]
+        }
+      },
+      "2026-05-21": {
+        "name": "Ascension",
+        "season": "Easter",
+        "color": "white",
+        "reading": {
+          "version": "any",
+          "book": "Acts",
+          "chapter": 1,
+          "verses": [6, 7, 8, 9, 10, 11]
+        }
+      },
+      "2026-05-31": {
+        "name": "Pentecost Sunday",
+        "season": "Pentecost",
+        "color": "red",
+        "reading": {
+          "version": "any",
+          "book": "Acts",
+          "chapter": 2,
+          "verses": [1, 2, 3, 4]
+        }
+      },
+      "2026-11-29": {
+        "name": "First Sunday of Advent",
+        "season": "Advent",
+        "color": "purple",
+        "reading": {
+          "version": "any",
+          "book": "Luke",
+          "chapter": 21,
+          "verses": [25, 26, 27, 28]
+        }
+      },
+      "2026-12-06": {
+        "name": "Second Sunday of Advent",
+        "season": "Advent",
+        "color": "purple",
+        "reading": {
+          "version": "any",
+          "book": "Matthew",
+          "chapter": 3,
+          "verses": [1, 2, 3]
+        }
+      },
+      "2026-12-13": {
+        "name": "Third Sunday of Advent (Gaudete)",
+        "season": "Advent",
+        "color": "rose",
+        "reading": {
+          "version": "any",
+          "book": "Matthew",
+          "chapter": 11,
+          "verses": [2, 3, 4, 5]
+        }
+      },
+      "2026-12-20": {
+        "name": "Fourth Sunday of Advent",
+        "season": "Advent",
+        "color": "purple",
+        "reading": {
+          "version": "any",
+          "book": "Matthew",
+          "chapter": 1,
+          "verses": [18, 19, 20, 21]
+        }
+      },
+      "2026-12-25": {
+        "name": "Christmas Day",
+        "season": "Christmas",
+        "color": "white",
+        "reading": {
+          "version": "any",
+          "book": "Luke",
+          "chapter": 2,
+          "verses": [1, 6, 7, 8, 9, 10, 11, 12, 13, 14]
+        }
+      },
+      "2026-12-26": {
+        "name": "St. Stephen, First Martyr",
+        "season": "Christmas",
+        "color": "red",
+        "reading": {
+          "version": "any",
+          "book": "Acts",
+          "chapter": 7,
+          "verses": [55, 56, 59, 60]
+        }
+      }
+    },
+    "reformed": {
+      "2026-01-06": {
+        "name": "Epiphany",
+        "season": "Epiphany",
+        "color": "white",
+        "reading": {
+          "version": "any",
+          "book": "Matthew",
+          "chapter": 2,
+          "verses": [1, 2, 9, 10, 11]
+        }
+      },
+      "2026-02-18": {
+        "name": "Ash Wednesday",
+        "season": "Lent",
+        "color": "purple",
+        "reading": {
+          "version": "any",
+          "book": "Joel",
+          "chapter": 2,
+          "verses": [12, 13]
+        }
+      },
+      "2026-04-05": {
+        "name": "Palm Sunday",
+        "season": "Holy Week",
+        "color": "red",
+        "reading": {
+          "version": "any",
+          "book": "Matthew",
+          "chapter": 21,
+          "verses": [1, 2, 3, 4, 5, 6, 7, 8, 9]
+        }
+      },
+      "2026-04-09": {
+        "name": "Maundy Thursday",
+        "season": "Holy Week",
+        "color": "purple",
+        "reading": {
+          "version": "any",
+          "book": "John",
+          "chapter": 13,
+          "verses": [1, 2, 3, 4, 5, 34, 35]
+        }
+      },
+      "2026-04-10": {
+        "name": "Good Friday",
+        "season": "Holy Week",
+        "color": "black",
+        "reading": {
+          "version": "any",
+          "book": "John",
+          "chapter": 19,
+          "verses": [17, 18, 28, 29, 30]
+        }
+      },
+      "2026-04-12": {
+        "name": "Easter Sunday",
+        "season": "Easter",
+        "color": "white",
+        "reading": {
+          "version": "any",
+          "book": "Luke",
+          "chapter": 24,
+          "verses": [1, 2, 3, 4, 5, 6]
+        }
+      },
+      "2026-05-21": {
+        "name": "Ascension Thursday",
+        "season": "Easter",
+        "color": "white",
+        "reading": {
+          "version": "any",
+          "book": "Acts",
+          "chapter": 1,
+          "verses": [6, 7, 8, 9, 10, 11]
+        }
+      },
+      "2026-05-31": {
+        "name": "Pentecost Sunday",
+        "season": "Pentecost",
+        "color": "red",
+        "reading": {
+          "version": "any",
+          "book": "Acts",
+          "chapter": 2,
+          "verses": [1, 2, 3, 4]
+        }
+      },
+      "2026-11-29": {
+        "name": "First Sunday of Advent",
+        "season": "Advent",
+        "color": "purple",
+        "reading": {
+          "version": "any",
+          "book": "Isaiah",
+          "chapter": 2,
+          "verses": [1, 2, 3, 4, 5]
+        }
+      },
+      "2026-12-25": {
+        "name": "Christmas Day",
+        "season": "Christmas",
+        "color": "white",
+        "reading": {
+          "version": "any",
+          "book": "Luke",
+          "chapter": 2,
+          "verses": [8, 9, 10, 11, 12, 13, 14]
+        }
+      }
+    },
+    "eastern": {
+      "2026-01-07": {
+        "name": "Christmas (Julian Calendar)",
+        "season": "Christmas",
+        "color": "gold",
+        "reading": {
+          "version": "any",
+          "book": "Luke",
+          "chapter": 2,
+          "verses": [1, 6, 7, 8, 9, 10, 11]
+        }
+      },
+      "2026-01-19": {
+        "name": "Theophany (Epiphany)",
+        "season": "Theophany",
+        "color": "white",
+        "reading": {
+          "version": "any",
+          "book": "Matthew",
+          "chapter": 3,
+          "verses": [13, 14, 15, 16, 17]
+        }
+      },
+      "2026-03-02": {
+        "name": "Clean Monday (Lent begins)",
+        "season": "Great Lent",
+        "color": "purple",
+        "reading": {
+          "version": "any",
+          "book": "Isaiah",
+          "chapter": 1,
+          "verses": [16, 17, 18]
+        }
+      },
+      "2026-04-12": {
+        "name": "Palm Sunday",
+        "season": "Holy Week",
+        "color": "green",
+        "reading": {
+          "version": "any",
+          "book": "John",
+          "chapter": 12,
+          "verses": [1, 12, 13]
+        }
+      },
+      "2026-04-17": {
+        "name": "Good Friday",
+        "season": "Holy Week",
+        "color": "black",
+        "reading": {
+          "version": "any",
+          "book": "John",
+          "chapter": 19,
+          "verses": [25, 26, 27, 28, 29, 30]
+        }
+      },
+      "2026-04-19": {
+        "name": "Pascha (Easter)",
+        "season": "Pascha",
+        "color": "gold",
+        "reading": {
+          "version": "any",
+          "book": "John",
+          "chapter": 1,
+          "verses": [1, 2, 3, 4, 5, 14]
+        }
+      },
+      "2026-05-28": {
+        "name": "Ascension",
+        "season": "Pascha",
+        "color": "white",
+        "reading": {
+          "version": "any",
+          "book": "Acts",
+          "chapter": 1,
+          "verses": [9, 10, 11]
+        }
+      },
+      "2026-06-07": {
+        "name": "Pentecost",
+        "season": "Pentecost",
+        "color": "green",
+        "reading": {
+          "version": "any",
+          "book": "John",
+          "chapter": 7,
+          "verses": [37, 38, 39]
+        }
+      }
+    }
+  },
+  "2027": {
+    "western_latin": {
+      "2027-01-01": {
+        "name": "Solemnity of Mary, Mother of God",
+        "season": "Christmas",
+        "color": "white",
+        "reading": {
+          "version": "any",
+          "book": "Luke",
+          "chapter": 2,
+          "verses": [16, 17, 18, 19, 20, 21]
+        }
+      },
+      "2027-01-06": {
+        "name": "Epiphany",
+        "season": "Christmas",
+        "color": "white",
+        "reading": {
+          "version": "any",
+          "book": "Matthew",
+          "chapter": 2,
+          "verses": [1, 2, 9, 10, 11]
+        }
+      },
+      "2027-02-10": {
+        "name": "Ash Wednesday",
+        "season": "Lent",
+        "color": "purple",
+        "reading": {
+          "version": "any",
+          "book": "Matthew",
+          "chapter": 6,
+          "verses": [1, 2, 3, 4, 5, 6]
+        }
+      },
+      "2027-03-28": {
+        "name": "Palm Sunday",
+        "season": "Holy Week",
+        "color": "red",
+        "reading": {
+          "version": "any",
+          "book": "Matthew",
+          "chapter": 21,
+          "verses": [1, 2, 3, 4, 5, 6, 7, 8, 9]
+        }
+      },
+      "2027-04-01": {
+        "name": "Holy Thursday",
+        "season": "Holy Week",
+        "color": "white",
+        "reading": {
+          "version": "any",
+          "book": "John",
+          "chapter": 13,
+          "verses": [1, 2, 3, 4, 5]
+        }
+      },
+      "2027-04-02": {
+        "name": "Good Friday",
+        "season": "Holy Week",
+        "color": "black",
+        "reading": {
+          "version": "any",
+          "book": "John",
+          "chapter": 19,
+          "verses": [17, 18, 19, 25, 26, 27, 28, 29, 30]
+        }
+      },
+      "2027-04-04": {
+        "name": "Easter Sunday",
+        "season": "Easter",
+        "color": "white",
+        "reading": {
+          "version": "any",
+          "book": "John",
+          "chapter": 20,
+          "verses": [1, 2, 11, 12, 13, 14, 15, 16]
+        }
+      },
+      "2027-05-13": {
+        "name": "Ascension",
+        "season": "Easter",
+        "color": "white",
+        "reading": {
+          "version": "any",
+          "book": "Acts",
+          "chapter": 1,
+          "verses": [6, 7, 8, 9, 10, 11]
+        }
+      },
+      "2027-05-23": {
+        "name": "Pentecost Sunday",
+        "season": "Pentecost",
+        "color": "red",
+        "reading": {
+          "version": "any",
+          "book": "Acts",
+          "chapter": 2,
+          "verses": [1, 2, 3, 4]
+        }
+      },
+      "2027-11-28": {
+        "name": "First Sunday of Advent",
+        "season": "Advent",
+        "color": "purple",
+        "reading": {
+          "version": "any",
+          "book": "Luke",
+          "chapter": 21,
+          "verses": [25, 26, 27, 28]
+        }
+      },
+      "2027-12-25": {
+        "name": "Christmas Day",
+        "season": "Christmas",
+        "color": "white",
+        "reading": {
+          "version": "any",
+          "book": "Luke",
+          "chapter": 2,
+          "verses": [1, 6, 7, 8, 9, 10, 11, 12, 13, 14]
+        }
+      }
+    },
+    "reformed": {
+      "2027-02-10": {
+        "name": "Ash Wednesday",
+        "season": "Lent",
+        "color": "purple",
+        "reading": {
+          "version": "any",
+          "book": "Joel",
+          "chapter": 2,
+          "verses": [12, 13]
+        }
+      },
+      "2027-04-04": {
+        "name": "Easter Sunday",
+        "season": "Easter",
+        "color": "white",
+        "reading": {
+          "version": "any",
+          "book": "Luke",
+          "chapter": 24,
+          "verses": [1, 2, 3, 4, 5, 6]
+        }
+      },
+      "2027-05-23": {
+        "name": "Pentecost Sunday",
+        "season": "Pentecost",
+        "color": "red",
+        "reading": {
+          "version": "any",
+          "book": "Acts",
+          "chapter": 2,
+          "verses": [1, 2, 3, 4]
+        }
+      },
+      "2027-12-25": {
+        "name": "Christmas Day",
+        "season": "Christmas",
+        "color": "white",
+        "reading": {
+          "version": "any",
+          "book": "Luke",
+          "chapter": 2,
+          "verses": [8, 9, 10, 11, 12, 13, 14]
+        }
+      }
+    },
+    "eastern": {
+      "2027-01-07": {
+        "name": "Christmas (Julian Calendar)",
+        "season": "Christmas",
+        "color": "gold",
+        "reading": {
+          "version": "any",
+          "book": "Luke",
+          "chapter": 2,
+          "verses": [1, 6, 7, 8, 9, 10, 11]
+        }
+      },
+      "2027-05-02": {
+        "name": "Pascha (Easter)",
+        "season": "Pascha",
+        "color": "gold",
+        "reading": {
+          "version": "any",
+          "book": "John",
+          "chapter": 1,
+          "verses": [1, 2, 3, 4, 5, 14]
+        }
+      }
+    }
+  },
+  "2028": {
+    "western_latin": {
+      "2028-01-01": {
+        "name": "Solemnity of Mary, Mother of God",
+        "season": "Christmas",
+        "color": "white",
+        "reading": {
+          "version": "any",
+          "book": "Luke",
+          "chapter": 2,
+          "verses": [16, 17, 18, 19, 20, 21]
+        }
+      },
+      "2028-03-01": {
+        "name": "Ash Wednesday",
+        "season": "Lent",
+        "color": "purple",
+        "reading": {
+          "version": "any",
+          "book": "Matthew",
+          "chapter": 6,
+          "verses": [1, 2, 3, 4, 5, 6]
+        }
+      },
+      "2028-04-16": {
+        "name": "Easter Sunday",
+        "season": "Easter",
+        "color": "white",
+        "reading": {
+          "version": "any",
+          "book": "John",
+          "chapter": 20,
+          "verses": [1, 2, 11, 12, 13, 14, 15, 16]
+        }
+      },
+      "2028-05-25": {
+        "name": "Ascension",
+        "season": "Easter",
+        "color": "white",
+        "reading": {
+          "version": "any",
+          "book": "Acts",
+          "chapter": 1,
+          "verses": [6, 7, 8, 9, 10, 11]
+        }
+      },
+      "2028-06-04": {
+        "name": "Pentecost Sunday",
+        "season": "Pentecost",
+        "color": "red",
+        "reading": {
+          "version": "any",
+          "book": "Acts",
+          "chapter": 2,
+          "verses": [1, 2, 3, 4]
+        }
+      },
+      "2028-12-03": {
+        "name": "First Sunday of Advent",
+        "season": "Advent",
+        "color": "purple",
+        "reading": {
+          "version": "any",
+          "book": "Luke",
+          "chapter": 21,
+          "verses": [25, 26, 27, 28]
+        }
+      },
+      "2028-12-25": {
+        "name": "Christmas Day",
+        "season": "Christmas",
+        "color": "white",
+        "reading": {
+          "version": "any",
+          "book": "Luke",
+          "chapter": 2,
+          "verses": [1, 6, 7, 8, 9, 10, 11, 12, 13, 14]
+        }
+      }
+    },
+    "reformed": {
+      "2028-04-16": {
+        "name": "Easter Sunday",
+        "season": "Easter",
+        "color": "white",
+        "reading": {
+          "version": "any",
+          "book": "Luke",
+          "chapter": 24,
+          "verses": [1, 2, 3, 4, 5, 6]
+        }
+      },
+      "2028-12-25": {
+        "name": "Christmas Day",
+        "season": "Christmas",
+        "color": "white",
+        "reading": {
+          "version": "any",
+          "book": "Luke",
+          "chapter": 2,
+          "verses": [8, 9, 10, 11, 12, 13, 14]
+        }
+      }
+    },
+    "eastern": {
+      "2028-01-07": {
+        "name": "Christmas (Julian Calendar)",
+        "season": "Christmas",
+        "color": "gold",
+        "reading": {
+          "version": "any",
+          "book": "Luke",
+          "chapter": 2,
+          "verses": [1, 6, 7, 8, 9, 10, 11]
+        }
+      },
+      "2028-04-23": {
+        "name": "Pascha (Easter)",
+        "season": "Pascha",
+        "color": "gold",
+        "reading": {
+          "version": "any",
+          "book": "John",
+          "chapter": 1,
+          "verses": [1, 2, 3, 4, 5, 14]
+        }
+      }
+    }
+  },
+  "2029": {
+    "western_latin": {
+      "2029-01-01": {
+        "name": "Solemnity of Mary, Mother of God",
+        "season": "Christmas",
+        "color": "white",
+        "reading": {
+          "version": "any",
+          "book": "Luke",
+          "chapter": 2,
+          "verses": [16, 17, 18, 19, 20, 21]
+        }
+      },
+      "2029-02-14": {
+        "name": "Ash Wednesday",
+        "season": "Lent",
+        "color": "purple",
+        "reading": {
+          "version": "any",
+          "book": "Matthew",
+          "chapter": 6,
+          "verses": [1, 2, 3, 4, 5, 6]
+        }
+      },
+      "2029-04-01": {
+        "name": "Easter Sunday",
+        "season": "Easter",
+        "color": "white",
+        "reading": {
+          "version": "any",
+          "book": "John",
+          "chapter": 20,
+          "verses": [1, 2, 11, 12, 13, 14, 15, 16]
+        }
+      },
+      "2029-05-10": {
+        "name": "Ascension",
+        "season": "Easter",
+        "color": "white",
+        "reading": {
+          "version": "any",
+          "book": "Acts",
+          "chapter": 1,
+          "verses": [6, 7, 8, 9, 10, 11]
+        }
+      },
+      "2029-05-20": {
+        "name": "Pentecost Sunday",
+        "season": "Pentecost",
+        "color": "red",
+        "reading": {
+          "version": "any",
+          "book": "Acts",
+          "chapter": 2,
+          "verses": [1, 2, 3, 4]
+        }
+      },
+      "2029-12-02": {
+        "name": "First Sunday of Advent",
+        "season": "Advent",
+        "color": "purple",
+        "reading": {
+          "version": "any",
+          "book": "Luke",
+          "chapter": 21,
+          "verses": [25, 26, 27, 28]
+        }
+      },
+      "2029-12-25": {
+        "name": "Christmas Day",
+        "season": "Christmas",
+        "color": "white",
+        "reading": {
+          "version": "any",
+          "book": "Luke",
+          "chapter": 2,
+          "verses": [1, 6, 7, 8, 9, 10, 11, 12, 13, 14]
+        }
+      }
+    },
+    "reformed": {
+      "2029-04-01": {
+        "name": "Easter Sunday",
+        "season": "Easter",
+        "color": "white",
+        "reading": {
+          "version": "any",
+          "book": "Luke",
+          "chapter": 24,
+          "verses": [1, 2, 3, 4, 5, 6]
+        }
+      },
+      "2029-12-25": {
+        "name": "Christmas Day",
+        "season": "Christmas",
+        "color": "white",
+        "reading": {
+          "version": "any",
+          "book": "Luke",
+          "chapter": 2,
+          "verses": [8, 9, 10, 11, 12, 13, 14]
+        }
+      }
+    },
+    "eastern": {
+      "2029-01-07": {
+        "name": "Christmas (Julian Calendar)",
+        "season": "Christmas",
+        "color": "gold",
+        "reading": {
+          "version": "any",
+          "book": "Luke",
+          "chapter": 2,
+          "verses": [1, 6, 7, 8, 9, 10, 11]
+        }
+      },
+      "2029-04-08": {
+        "name": "Pascha (Easter)",
+        "season": "Pascha",
+        "color": "gold",
+        "reading": {
+          "version": "any",
+          "book": "John",
+          "chapter": 1,
+          "verses": [1, 2, 3, 4, 5, 14]
+        }
+      }
+    }
+  },
+  "2030": {
+    "western_latin": {
+      "2030-01-01": {
+        "name": "Solemnity of Mary, Mother of God",
+        "season": "Christmas",
+        "color": "white",
+        "reading": {
+          "version": "any",
+          "book": "Luke",
+          "chapter": 2,
+          "verses": [16, 17, 18, 19, 20, 21]
+        }
+      },
+      "2030-03-06": {
+        "name": "Ash Wednesday",
+        "season": "Lent",
+        "color": "purple",
+        "reading": {
+          "version": "any",
+          "book": "Matthew",
+          "chapter": 6,
+          "verses": [1, 2, 3, 4, 5, 6]
+        }
+      },
+      "2030-04-21": {
+        "name": "Easter Sunday",
+        "season": "Easter",
+        "color": "white",
+        "reading": {
+          "version": "any",
+          "book": "John",
+          "chapter": 20,
+          "verses": [1, 2, 11, 12, 13, 14, 15, 16]
+        }
+      },
+      "2030-05-30": {
+        "name": "Ascension",
+        "season": "Easter",
+        "color": "white",
+        "reading": {
+          "version": "any",
+          "book": "Acts",
+          "chapter": 1,
+          "verses": [6, 7, 8, 9, 10, 11]
+        }
+      },
+      "2030-06-09": {
+        "name": "Pentecost Sunday",
+        "season": "Pentecost",
+        "color": "red",
+        "reading": {
+          "version": "any",
+          "book": "Acts",
+          "chapter": 2,
+          "verses": [1, 2, 3, 4]
+        }
+      },
+      "2030-12-01": {
+        "name": "First Sunday of Advent",
+        "season": "Advent",
+        "color": "purple",
+        "reading": {
+          "version": "any",
+          "book": "Luke",
+          "chapter": 21,
+          "verses": [25, 26, 27, 28]
+        }
+      },
+      "2030-12-25": {
+        "name": "Christmas Day",
+        "season": "Christmas",
+        "color": "white",
+        "reading": {
+          "version": "any",
+          "book": "Luke",
+          "chapter": 2,
+          "verses": [1, 6, 7, 8, 9, 10, 11, 12, 13, 14]
+        }
+      }
+    },
+    "reformed": {
+      "2030-04-21": {
+        "name": "Easter Sunday",
+        "season": "Easter",
+        "color": "white",
+        "reading": {
+          "version": "any",
+          "book": "Luke",
+          "chapter": 24,
+          "verses": [1, 2, 3, 4, 5, 6]
+        }
+      },
+      "2030-12-25": {
+        "name": "Christmas Day",
+        "season": "Christmas",
+        "color": "white",
+        "reading": {
+          "version": "any",
+          "book": "Luke",
+          "chapter": 2,
+          "verses": [8, 9, 10, 11, 12, 13, 14]
+        }
+      }
+    },
+    "eastern": {
+      "2030-01-07": {
+        "name": "Christmas (Julian Calendar)",
+        "season": "Christmas",
+        "color": "gold",
+        "reading": {
+          "version": "any",
+          "book": "Luke",
+          "chapter": 2,
+          "verses": [1, 6, 7, 8, 9, 10, 11]
+        }
+      },
+      "2030-04-28": {
+        "name": "Pascha (Easter)",
+        "season": "Pascha",
+        "color": "gold",
+        "reading": {
+          "version": "any",
+          "book": "John",
+          "chapter": 1,
+          "verses": [1, 2, 3, 4, 5, 14]
+        }
+      }
+    }
+  },
+  "easterDates": {
+    "2026": {
+      "western_latin": "2026-04-12",
+      "reformed": "2026-04-12",
+      "eastern": "2026-04-19"
+    },
+    "2027": {
+      "western_latin": "2027-04-04",
+      "reformed": "2027-04-04",
+      "eastern": "2027-05-02"
+    },
+    "2028": {
+      "western_latin": "2028-04-16",
+      "reformed": "2028-04-16",
+      "eastern": "2028-04-23"
+    },
+    "2029": {
+      "western_latin": "2029-04-01",
+      "reformed": "2029-04-01",
+      "eastern": "2029-04-08"
+    },
+    "2030": {
+      "western_latin": "2030-04-21",
+      "reformed": "2030-04-21",
+      "eastern": "2030-04-28"
+    }
+  },
+  "_notes": {
+    "usage": "Content Prioritizer checks this file for liturgical season and special feast days",
+    "easterCalculation": "Western Latin/Reformed use Gregorian calendar with Computus algorithm. Eastern use Julian calendar (13 days later)",
+    "colors": "Liturgical colors affect background gradient in sangocast.html",
+    "readings": "Each special day includes a Bible reading reference that can be displayed",
+    "expansion": "More feasts can be added: All Saints (Nov 1), Corpus Christi, Assumption, etc.",
+    "threeYearCycle": "Lectionary readings follow Year A, B, C cycle for Sundays"
+  }
+}
