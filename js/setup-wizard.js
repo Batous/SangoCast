@@ -58,6 +58,44 @@ const SangocastSetupWizard = (() => {
   }
 
   /**
+   * Normalise a channel object from channels.json into the shape the wizard
+   * expects internally: { id, type, metadata: { name, description, tradition,
+   * featured }, defaultSettings: { recommendedBible } }
+   *
+   * Handles BOTH formats gracefully:
+   *   - Flat  : { id, name, description, tradition, ... }   ← your current JSON
+   *   - Nested: { id, metadata: { name, ... }, ... }        ← original wizard format
+   */
+  function normalizeChannel(ch) {
+    // Already in nested format — nothing to do
+    if (ch.metadata && typeof ch.metadata === 'object') return ch;
+
+    // Map channel type string to short prefix for icon lookup
+    const typeMap = {
+      'evergreen':  'SCR',
+      'liturgical': 'LEC',
+      'event':      'EVT',
+      'scripture':  'SCR',
+      'prayer':     'SCR'
+    };
+
+    return {
+      id:   ch.id,
+      type: typeMap[ch.type] || typeMap[ch.category] || 'SCR',
+      metadata: {
+        name:        ch.name        || ch.id,
+        description: ch.description || '',
+        tradition:   ch.tradition   || 'interconfessional',
+        featured:    ch.featured    || false,
+        author:      ch.author      || ''
+      },
+      defaultSettings: {
+        recommendedBible: (ch.defaultContent && ch.defaultContent.translation) || 'KJV'
+      }
+    };
+  }
+
+  /**
    * Charger les chaînes disponibles
    */
   async function loadAvailableChannels() {
@@ -65,7 +103,7 @@ const SangocastSetupWizard = (() => {
       const response = await fetch('/data/channels.json');
       if (response.ok) {
         const data = await response.json();
-        availableChannels = data.channels || [];
+        availableChannels = (data.channels || []).map(normalizeChannel);
         console.log('✅ Channels chargées:', availableChannels.length);
       }
     } catch (error) {
@@ -494,7 +532,20 @@ const SangocastSetupWizard = (() => {
         content.innerHTML = getTraditionHTML();
         break;
       case STEPS.CHANNEL:
-        content.innerHTML = getChannelHTML();
+        // If channels haven't loaded yet (async race), wait and retry once
+        if (availableChannels.length === 0) {
+          content.innerHTML = `
+            <div class="step-title">📺 Choisissez Votre Chaîne</div>
+            <div style="text-align:center; padding: 40px; color: #6b7280;">
+              <div style="font-size: 32px; margin-bottom: 12px;">⏳</div>
+              Chargement des chaînes...
+            </div>`;
+          loadAvailableChannels().then(() => {
+            if (currentStep === STEPS.CHANNEL) showStep(STEPS.CHANNEL);
+          });
+        } else {
+          content.innerHTML = getChannelHTML();
+        }
         break;
       case STEPS.BIBLE:
         content.innerHTML = getBibleHTML();
@@ -1065,7 +1116,10 @@ function getBibleHTML() {
     selectChannel,
     toggleBible,
     togglePrayerTime,
-    toggleAudioHours
+    toggleAudioHours,
+    close:   closeWizard,   // alias for external callers
+    hide:    closeWizard,   // alias
+    skip:    closeWizard    // alias
   };
 })();
 
