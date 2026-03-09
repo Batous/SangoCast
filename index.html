@@ -825,6 +825,40 @@
 
         // Content Prioritizer
         (async () => {
+          // ── Register Bible paths before the prioritizer uses them ────
+          // registerBible() is confirmed in BibleLookupModule_v5 public API.
+          // Filenames match exactly what is in /data/bibles/ (case-sensitive).
+          if (typeof BibleLookupModule !== 'undefined') {
+            const bibleFiles = {
+              'KJV':                             '/data/bibles/kjv.json',
+              'ASV':                             '/data/bibles/ASV.json',
+              'WEB':                             '/data/bibles/English_WEB.json',
+              'DARBY':                           '/data/bibles/darby.json',
+              'ENGLISH DARBY':                   '/data/bibles/english_darby.json',
+              'DOUAY-RHEIMS':                    '/data/bibles/Douay_Rheims.json',
+              'FRENCH DARBY':                    '/data/bibles/french_darby.json',
+              'FRENCH GENEVA':                   '/data/bibles/fregeneve.json',
+              'FRANÇAIS COURANT':                '/data/bibles/french_français_courant.json',
+              'LOUIS SEGOND':                    '/data/bibles/french_louis_segond.json',
+              'LSG MINIMAL':                     '/data/bibles/French_LSG.json',
+              'MARTIN':                          '/data/bibles/French_Martin.json',
+              'MARTIN 1744':                     '/data/bibles/french_martin_1744.json',
+              'NOUVELLE EDITION DE GENÈVE 1979': '/data/bibles/french_nouvelle_edition_de_genève_1979.json',
+              'OSTERVALD':                       '/data/bibles/French_Ostervald.json',
+              'PAROLE DE VIE':                   '/data/bibles/french_parole_de_vie.json',
+              'SEMEUR':                          '/data/bibles/french_semeur.json',
+              'GENEVA':                          '/data/bibles/Geneva.json',
+              'LUTHER GERMAN':                   '/data/bibles/Luther_German.json',
+              'ORTHODOX NT':                     '/data/bibles/Orthodox_NT.json',
+            };
+            Object.entries(bibleFiles).forEach(([code, path]) => {
+              BibleLookupModule.registerBible(code, path);
+            });
+            console.log('📖 Bibles enregistrées:', Object.keys(bibleFiles).length,
+              '— disponibles:', BibleLookupModule.getAvailableBibles());
+          }
+          // ─────────────────────────────────────────────────────────────
+
           const installDate = localStorage.getItem('sangocast_install_date');
           await SangocastContentPrioritizer.init(installDate);
           console.log('✅ ContentPrioritizer initialisé');
@@ -1550,13 +1584,21 @@
           const data = await response.json();
           availableChannels = data.channels || [];
           
-          // Populate channel dropdown
+          // Populate channel dropdown — handle both flat and nested formats
           const channelSelect = document.getElementById('setting-channel');
-          channelSelect.innerHTML = availableChannels.map(ch => `
-            <option value="${ch.id}" ${ch.id === userConfig.channelId ? 'selected' : ''}>
-              ${ch.metadata.name}
-            </option>
-          `).join('');
+          channelSelect.innerHTML = availableChannels.map(ch => {
+            // Nested format: ch.metadata.name  (new channels.json)
+            // Flat format:   ch.name           (old channels.json)
+            const name = (ch.metadata && ch.metadata.name) || ch.name || ch.id;
+            return `<option value="${ch.id}" ${ch.id === userConfig.channelId ? 'selected' : ''}>
+              ${name}
+            </option>`;
+          }).join('');
+
+          // Show fallback message if dropdown is still empty
+          if (!channelSelect.innerHTML.trim()) {
+            channelSelect.innerHTML = `<option value="${userConfig.channelId}">${userConfig.channelId} (actuel)</option>`;
+          }
         }
       } catch (error) {
         console.warn('Could not load channels:', error);
