@@ -79,13 +79,17 @@ const SangocastSetupWizard = (() => {
       'prayer':     'SCR'
     };
 
+    // Treat "ecumenical" as equivalent to "interconfessional"
+    const traditionMap = { 'ecumenical': 'interconfessional' };
+    const rawTradition = ch.tradition || 'interconfessional';
+
     return {
       id:   ch.id,
       type: typeMap[ch.type] || typeMap[ch.category] || 'SCR',
       metadata: {
         name:        ch.name        || ch.id,
         description: ch.description || '',
-        tradition:   ch.tradition   || 'interconfessional',
+        tradition:   traditionMap[rawTradition] || rawTradition,
         featured:    ch.featured    || false,
         author:      ch.author      || ''
       },
@@ -209,6 +213,7 @@ const SangocastSetupWizard = (() => {
         max-width: 600px;
         max-height: 90vh;
         background: white;
+        color: #111827;  /* override inherited white color from .app-container */
         border-radius: 20px;
         box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
         display: flex;
@@ -758,11 +763,22 @@ const SangocastSetupWizard = (() => {
    * ÉTAPE 5: Sélection Chaîne
    */
   function getChannelHTML() {
-    const filteredChannels = availableChannels.filter(ch => 
-      !ch.metadata.tradition || 
-      ch.metadata.tradition === preferences.tradition || 
-      ch.metadata.tradition === 'interconfessional'
+    // Show channel if:
+    // - it has no tradition restriction, OR
+    // - it matches the user's tradition, OR
+    // - it is interconfessional/ecumenical (open to all), OR
+    // - no channels matched at all (show everything as last resort)
+    const OPEN = ['interconfessional', 'ecumenical'];
+    let filteredChannels = availableChannels.filter(ch =>
+      !ch.metadata.tradition ||
+      ch.metadata.tradition === preferences.tradition ||
+      OPEN.includes(ch.metadata.tradition)
     );
+
+    // Last resort: if the filter leaves nothing, show all channels
+    if (filteredChannels.length === 0) {
+      filteredChannels = availableChannels;
+    }
 
     return `
       <div class="step-title">📺 Choisissez Votre Chaîne</div>
