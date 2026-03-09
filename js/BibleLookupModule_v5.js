@@ -23,7 +23,30 @@ const SangocastBibleLookup = (() => {
     CACHE_MAX_SIZE: 50,
     CACHE_TTL: 7 * 24 * 60 * 60 * 1000, // 7 days
     STORAGE_PREFIX: 'sangocast_bible_',
-    BIBLE_PATHS: {},
+    	BIBLE_PATHS: {
+  'KJV':                             '/data/bibles/kjv.json',
+  'ASV':                             '/data/bibles/ASV.json',
+  'WEB':                             '/data/bibles/English_WEB.json',
+  'DARBY':                           '/data/bibles/darby.json',
+  'ENGLISH DARBY':                   '/data/bibles/english_darby.json',
+  'DOUAY-RHEIMS':                    '/data/bibles/Douay_Rheims.json',
+  'FRENCH DARBY':                    '/data/bibles/french_darby.json',
+  'FRENCH GENEVA':                   '/data/bibles/fregeneve.json',
+  'FRANÇAIS COURANT':                '/data/bibles/french_français_courant.json',
+  'LOUIS SEGOND':                    '/data/bibles/french_louis_segond.json',
+  'LSG MINIMAL':                     '/data/bibles/French_LSG.json',
+  'MARTIN':                          '/data/bibles/French_Martin.json',
+  'MARTIN 1744':                     '/data/bibles/french_martin_1744.json',
+  'OSTERVALD':                       '/data/bibles/French_Ostervald.json',
+  'PAROLE DE VIE':                   '/data/bibles/french_parole_de_vie.json',
+  'SEMEUR':                          '/data/bibles/french_semeur.json',
+  'GENEVA':                          '/data/bibles/Geneva.json',
+  'LUTHER GERMAN':                   '/data/bibles/Luther_German.json',
+  'ORTHODOX NT':                     '/data/bibles/Orthodox_NT.json',
+  'NOUVELLE EDITION DE GENÈVE 1979': '/data/bibles/french_nouvelle_edition_de_genève_1979.json',
+},
+	
+	
     BASE_PATH: BASE_PATH
   };
 
