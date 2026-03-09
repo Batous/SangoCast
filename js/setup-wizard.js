@@ -299,13 +299,13 @@ const SangocastSetupWizard = (() => {
       .step-title {
         font-size: 28px;
         font-weight: 700;
-        color: #1f2937;
+        color: #1f2937 !important;
         margin-bottom: 12px;
       }
 
       .step-description {
         font-size: 16px;
-        color: #6b7280;
+        color: #6b7280 !important;
         margin-bottom: 32px;
         line-height: 1.6;
       }
@@ -322,6 +322,7 @@ const SangocastSetupWizard = (() => {
         cursor: pointer;
         transition: all 0.2s;
         background: white;
+        color: #111827 !important;
       }
 
       .option-card:hover {
@@ -343,12 +344,12 @@ const SangocastSetupWizard = (() => {
         font-weight: 700;
         font-size: 16px;
         margin-bottom: 4px;
-        color: #1f2937;
+        color: #1f2937 !important;
       }
 
       .option-desc {
         font-size: 14px;
-        color: #6b7280;
+        color: #6b7280 !important;
       }
 
       .option-badge {
@@ -373,6 +374,8 @@ const SangocastSetupWizard = (() => {
         cursor: pointer;
         transition: all 0.2s;
         margin-bottom: 12px;
+        background: #ffffff;
+        color: #111827 !important;
       }
 
       .channel-card:hover {
@@ -388,27 +391,32 @@ const SangocastSetupWizard = (() => {
         font-size: 48px;
         width: 60px;
         text-align: center;
+        color: #111827;
       }
 
       .channel-info {
         flex: 1;
+        color: #111827 !important;
       }
 
       .channel-name {
         font-weight: 700;
         font-size: 16px;
         margin-bottom: 4px;
+        color: #111827 !important;
       }
 
       .channel-id {
         font-size: 12px;
-        color: #667eea;
+        color: #667eea !important;
         font-family: monospace;
         margin-bottom: 4px;
       }
 
       .channel-desc {
         font-size: 13px;
+        color: #6b7280 !important;
+      }
         color: #6b7280;
       }
 
