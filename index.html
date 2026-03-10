@@ -434,29 +434,27 @@
       <div class="settings-group">
         <label class="settings-label" id="lbl-bible">Version Bible</label>
         <select id="setting-bible">
-          <option value="KJV">KJV</option>
-          <option value="ASV">ASV</option>
-          <option value="DARBY">Darby</option>
-          <option value="DOUAY-RHEIMS">Douay-Rheims</option>
-          <option value="ENGLISH DARBY">English Darby</option>
-          <option value="FRANÇAIS COURANT">Français Courant</option>
-          <option value="FRENCH DARBY">French Darby</option>
-          <option value="FRENCH GENEVA">French Geneva</option>
-          <option value="FRENCH MESSAGE">French Message</option>
-          <option value="GENEVA">Geneva</option>
-          <option value="LOUIS SEGOND">Louis Segond</option>
-          <option value="LSG MINIMAL">LSG Minimal</option>
-          <option value="LSG REEL">LSG Reel</option>
-          <option value="LUTHER GERMAN">Luther German</option>
-          <option value="MARTIN">Martin</option>
-          <option value="MARTIN 1744">Martin 1744</option>
-          <option value="NOUVELLE EDITION DE GENÈVE 1979">Nouvelle Edition de Genève 1979</option>
-          <option value="ORTHODOX NT">Orthodox NT</option>
-          <option value="OSTERVALD">Ostervald</option>
-          <option value="PAROLE DE VIE">Parole de Vie</option>
-          <option value="SEMEUR">Semeur</option>
-          <option value="WEB">WEB</option>
-          <option value="BBE">BBE</option>
+          <!-- Values match wizard codes exactly (lowercase-hyphenated).
+               Only confirmed files are listed. Removed: LSG Minimal, LSG Reel,
+               Luther German, Orthodox NT, French Message, BBE (no files found). -->
+          <!-- ── French ─────────────────────────────── -->
+          <option value="lsg">Louis Segond (LSG)</option>
+          <option value="darby">Darby (Français)</option>
+          <option value="louis-segond">Louis Segond (variante)</option>
+          <option value="martin1744">Martin 1744</option>
+          <option value="ostervald">Ostervald</option>
+          <option value="geneve1669">Genève 1669</option>
+          <option value="neg1979">Nouvelle Édition de Genève 1979</option>
+          <option value="francais-courant">Français Courant</option>
+          <option value="parole-de-vie">Parole de Vie</option>
+          <option value="semeur">Semeur</option>
+          <!-- ── English ────────────────────────────── -->
+          <option value="kjv">King James Version (KJV)</option>
+          <option value="web">World English Bible (WEB)</option>
+          <option value="asv">American Standard Version (ASV)</option>
+          <option value="english-darby">English Darby</option>
+          <option value="douay-rheims">Douay-Rheims</option>
+          <option value="geneva">Geneva Bible</option>
         </select>
       </div>
 
@@ -697,10 +695,31 @@
      */
     function loadUserConfig() {
       userConfig.channelId = localStorage.getItem('sangocast_channel_id') || 'SCR-EN-GL-0001';
-      userConfig.bibleVersion = JSON.parse(localStorage.getItem('sangocast_bible_versions') || '["KJV"]')[0];
       userConfig.ageMode = localStorage.getItem('sangocast_age_mode') || 'family_mode';
       userConfig.language = localStorage.getItem('sangocast_language') || 'fr-FR';
       userConfig.tradition = localStorage.getItem('sangocast_tradition') || 'protestant';
+
+      // Normalize Bible version: migrate any old uppercase/spaced values from previous
+      // settings UI to the new lowercase-hyphenated wizard codes.
+      const rawBible = JSON.parse(localStorage.getItem('sangocast_bible_versions') || '["kjv"]')[0];
+      const BIBLE_MIGRATION = {
+        'KJV': 'kjv', 'ASV': 'asv', 'WEB': 'web', 'BBE': 'kjv',
+        'DARBY': 'darby', 'FRENCH DARBY': 'darby', 'ENGLISH DARBY': 'english-darby',
+        'LOUIS SEGOND': 'lsg', 'LSG MINIMAL': 'lsg', 'LSG REEL': 'lsg',
+        'MARTIN': 'martin1744', 'MARTIN 1744': 'martin1744',
+        'OSTERVALD': 'ostervald', 'SEMEUR': 'semeur',
+        'PAROLE DE VIE': 'parole-de-vie', 'FRANÇAIS COURANT': 'francais-courant',
+        'FRENCH GENEVA': 'geneve1669', 'GENEVA': 'geneva',
+        'NOUVELLE EDITION DE GENÈVE 1979': 'neg1979',
+        'DOUAY-RHEIMS': 'douay-rheims',
+        'LUTHER GERMAN': 'kjv', 'ORTHODOX NT': 'kjv', 'FRENCH MESSAGE': 'lsg'
+      };
+      userConfig.bibleVersion = BIBLE_MIGRATION[rawBible] || rawBible.toLowerCase() || 'kjv';
+
+      // Persist the normalized value so it won't need migrating again
+      if (BIBLE_MIGRATION[rawBible]) {
+        localStorage.setItem('sangocast_bible_versions', JSON.stringify([userConfig.bibleVersion]));
+      }
 
       console.log('📋 Configuration chargée:', userConfig);
     }
@@ -1358,10 +1377,10 @@
         console.warn('Could not load channels:', error);
       }
 
-      // Populate other settings
-      document.getElementById('setting-bible').value = userConfig.bibleVersion;
-      document.getElementById('setting-age').value = userConfig.ageMode;
-      document.getElementById('setting-language').value = userConfig.language;
+      // Populate other settings — values now match wizard codes so .value assignment works
+      document.getElementById('setting-bible').value = userConfig.bibleVersion || 'kjv';
+      document.getElementById('setting-age').value = userConfig.ageMode || 'family_mode';
+      document.getElementById('setting-language').value = userConfig.language || 'fr-FR';
 
       // Show modal
       document.getElementById('settings-modal').classList.add('active');
