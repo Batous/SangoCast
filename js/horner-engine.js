@@ -75,25 +75,68 @@ const SangocastHornerEngine = (() => {
 
   /**
    * Obtenir la distribution horaire pour toutes les listes
+   * Couvre 24h en trois blocs : matin (6-16h), soirée (16-22h), nuit (22-6h)
+   * Les 10 listes sont distribuées dans chaque bloc avec rotation continue
    */
   function getTimeDistribution() {
-    if (!hornerPlan) {
-      // Distribution par défaut si plan pas encore chargé
-      return [
-        {list: 1, startHour: 6, endHour: 7},
-        {list: 2, startHour: 7, endHour: 8},
-        {list: 3, startHour: 8, endHour: 9},
-        {list: 4, startHour: 9, endHour: 10},
-        {list: 5, startHour: 10, endHour: 11},
-        {list: 6, startHour: 11, endHour: 12},
-        {list: 7, startHour: 12, endHour: 13},
-        {list: 8, startHour: 13, endHour: 14},
-        {list: 9, startHour: 14, endHour: 15},
-        {list: 10, startHour: 15, endHour: 16}
-      ];
+    // Distribution principale 6h-16h (une liste par heure)
+    const mainSchedule = [
+      {list: 1, startHour: 6,  endHour: 7},
+      {list: 2, startHour: 7,  endHour: 8},
+      {list: 3, startHour: 8,  endHour: 9},
+      {list: 4, startHour: 9,  endHour: 10},
+      {list: 5, startHour: 10, endHour: 11},
+      {list: 6, startHour: 11, endHour: 12},
+      {list: 7, startHour: 12, endHour: 13},
+      {list: 8, startHour: 13, endHour: 14},
+      {list: 9, startHour: 14, endHour: 15},
+      {list: 10, startHour: 15, endHour: 16}
+    ];
+
+    // Extension soirée 16h-22h (listes 1-6 en répétition)
+    const eveningSchedule = [
+      {list: 1, startHour: 16, endHour: 17},
+      {list: 2, startHour: 17, endHour: 18},
+      {list: 3, startHour: 18, endHour: 19},
+      {list: 4, startHour: 19, endHour: 20},
+      {list: 5, startHour: 20, endHour: 21},
+      {list: 6, startHour: 21, endHour: 22}
+    ];
+
+    // Extension nuit 22h-6h (listes 7-10 + 1-4 pour la nuit/prière matinale)
+    const nightSchedule = [
+      {list: 7,  startHour: 22, endHour: 23},
+      {list: 8,  startHour: 23, endHour: 24},
+      {list: 9,  startHour: 0,  endHour: 1},
+      {list: 10, startHour: 1,  endHour: 2},
+      {list: 1,  startHour: 2,  endHour: 3},
+      {list: 2,  startHour: 3,  endHour: 4},
+      {list: 3,  startHour: 4,  endHour: 5},
+      {list: 4,  startHour: 5,  endHour: 6}
+    ];
+
+    if (hornerPlan && hornerPlan.timeDistribution && hornerPlan.timeDistribution.schedule) {
+      return hornerPlan.timeDistribution.schedule;
     }
 
-    return hornerPlan.timeDistribution.schedule;
+    return [...mainSchedule, ...eveningSchedule, ...nightSchedule];
+  }
+
+  /**
+   * Déterminer la liste Horner appropriée pour une heure donnée (hors créneaux planifiés)
+   * Mappe chaque heure de 0-23 sur une liste 1-10 de façon déterministe
+   */
+  function getListForHour(hour) {
+    // Mapping déterministe : 24h → 10 listes
+    // Priorise les listes Psaumes (3) et prière pour les heures nocturnes
+    const hourToList = {
+      0: 9, 1: 10, 2: 1, 3: 2, 4: 3, 5: 4,
+      6: 1, 7: 2, 8: 3, 9: 4, 10: 5, 11: 6,
+      12: 7, 13: 8, 14: 9, 15: 10,
+      16: 1, 17: 2, 18: 3, 19: 4, 20: 5, 21: 6,
+      22: 7, 23: 8
+    };
+    return hourToList[hour] || ((hour % 10) + 1);
   }
 
   /**
@@ -152,11 +195,13 @@ const SangocastHornerEngine = (() => {
   /**
    * Obtenir le chapitre à lire pour un créneau horaire spécifique
    * Ex: getReadingForTime(1, "0820") → Liste 3, jour 1
+   * Couvre 24h/24 : si hors du créneau planifié, retourne la lecture
+   * de la liste appropriée à cette heure (jamais null).
    */
   async function getReadingForTime(dayNumber, timeString) {
     const reading = await getReadingForDay(dayNumber);
-    
-    // Trouver quel chapitre correspond à ce créneau
+
+    // 1. Recherche dans les créneaux planifiés (comportement original)
     for (const chapter of reading.chapters) {
       if (chapter.timeslots.includes(timeString)) {
         return {
@@ -167,6 +212,43 @@ const SangocastHornerEngine = (() => {
       }
     }
 
+    // 2. Hors créneau planifié → déterminer la liste selon l'heure
+    const hour = parseInt(timeString.substring(0, 2), 10);
+    const targetListId = getListForHour(hour);
+
+    // Chercher la lecture de cette liste dans les chapitres du jour
+    const offScheduleChapter = reading.chapters.find(ch => ch.list === targetListId);
+
+    if (offScheduleChapter) {
+      console.warn(
+        `⚠️ Horner: créneau ${timeString} hors plage planifiée → ` +
+        `Liste ${targetListId} (${offScheduleChapter.book} ${offScheduleChapter.chapter})`
+      );
+      return {
+        ...offScheduleChapter,
+        currentTimeslot: timeString,
+        timeslotIndex: 0,
+        isOffSchedule: true  // flag indiquant un mapping hors-créneau
+      };
+    }
+
+    // 3. Dernier recours : première liste disponible du jour
+    if (reading.chapters.length > 0) {
+      const defaultChapter = reading.chapters[0];
+      console.warn(
+        `⚠️ Horner: aucune liste trouvée pour heure ${hour}h → ` +
+        `défaut Liste 1 (${defaultChapter.book} ${defaultChapter.chapter})`
+      );
+      return {
+        ...defaultChapter,
+        currentTimeslot: timeString,
+        timeslotIndex: 0,
+        isOffSchedule: true
+      };
+    }
+
+    // Ne devrait jamais arriver si le plan est correctement chargé
+    console.error('❌ Horner: aucune lecture disponible pour le jour', dayNumber);
     return null;
   }
 

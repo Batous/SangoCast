@@ -54,18 +54,17 @@
     }
 
     .logo {
-      font-size: 22px;
+      font-size: 32px;
       font-weight: 700;
       display: flex;
       align-items: center;
-      gap: 10px;
-      opacity: 0.85;
+      gap: 12px;
     }
 
     .datetime {
       display: flex;
       flex-direction: column;
-      align-items: center; /* centered */
+      align-items: center; /* Center text horizontally */
       font-size: 14px;
       opacity: 0.9;
     }
@@ -368,33 +367,7 @@
       }
     }
 
-    /* Default-mode warning banner */
-    .defaults-banner {
-      position: fixed;
-      top: 0;
-      left: 0;
-      right: 0;
-      background: rgba(251, 191, 36, 0.92);   /* amber */
-      backdrop-filter: blur(6px);
-      color: #1f2937;
-      font-size: 13px;
-      font-weight: 600;
-      text-align: center;
-      padding: 7px 16px;
-      z-index: 8888;
-      letter-spacing: 0.3px;
-      display: none;                           /* hidden until triggered */
-    }
-
-    .defaults-banner.active {
-      display: block;
-      animation: fadeIn 0.6s ease;
-    }
-
-    /* Push header down so banner doesn't overlap it */
-    body.defaults-mode .header {
-      margin-top: 34px;
-    }
+    /* Fullscreen mode */
     .fullscreen .header {
       display: none;
     }
@@ -411,7 +384,7 @@
       <div class="header-left">
         <div class="logo">
           <span>⏰</span>
-          <span>sangocast.live</span>
+          <span>SANGOCAST.LIVE</span>
         </div>
         <div class="datetime">
           <div class="date" id="current-date">Chargement...</div>
@@ -693,76 +666,9 @@
       const configured = localStorage.getItem('sangocast_configured');
       
       if (!configured || configured !== 'true') {
-        console.log('⚠️ Première utilisation - tentative de chargement du wizard...');
-
-        try {
-          const probe = await fetch('/data/channels.json', { method: 'HEAD' });
-          if (!probe.ok) throw new Error(`channels.json → HTTP ${probe.status}`);
-
-          // File reachable — let the wizard run, then wait for it to finish
-          // before continuing init(). The wizard calls saveConfiguration()
-          // which sets sangocast_configured=true, then reloads the page.
-          // We therefore just wait here: when the page reloads, init() runs
-          // again, finds configured=true, and falls through to the normal
-          // startup path below. No early return — spinner resolves on reload.
-          console.log('✅ channels.json accessible — wizard activé, en attente...');
-
-          // Poll localStorage every 500ms — resolves when wizard completes
-          await new Promise(resolve => {
-            const poll = setInterval(() => {
-              if (localStorage.getItem('sangocast_configured') === 'true') {
-                clearInterval(poll);
-                resolve();
-              }
-            }, 500);
-          });
-
-          // Wizard completed in-session (no reload) — reload cleanly
-          window.location.reload();
-          return; // stop this init() run; the reload will start a fresh one
-
-        } catch (err) {
-          console.warn('⚠️ channels.json introuvable ou serveur hors ligne:', err.message);
-          console.log('🔧 Auto-configuration avec les valeurs par défaut...');
-
-          localStorage.setItem('sangocast_configured',    'true');
-          localStorage.setItem('sangocast_channel_id',    'SCR-EN-GL-0001');
-          localStorage.setItem('sangocast_bible_versions', JSON.stringify(['KJV']));
-          localStorage.setItem('sangocast_age_mode',      'family_mode');
-          localStorage.setItem('sangocast_language',      'fr-FR');
-          localStorage.setItem('sangocast_tradition',     'protestant');
-          localStorage.setItem('sangocast_prayer_times',  JSON.stringify([6, 12, 18, 21]));
-          localStorage.setItem('sangocast_install_date',  new Date().toISOString());
-
-          // Dismiss wizard DOM
-          try {
-            if (typeof SangocastSetupWizard !== 'undefined') {
-              if (typeof SangocastSetupWizard.close   === 'function') SangocastSetupWizard.close();
-              if (typeof SangocastSetupWizard.hide    === 'function') SangocastSetupWizard.hide();
-              if (typeof SangocastSetupWizard.destroy === 'function') SangocastSetupWizard.destroy();
-              if (typeof SangocastSetupWizard.skip    === 'function') SangocastSetupWizard.skip();
-            }
-          } catch(wizErr) {
-            console.warn('Wizard API non disponible:', wizErr.message);
-          }
-          setTimeout(() => {
-            const wizardSelectors = [
-              '#setup-wizard', '#wizard', '.setup-wizard', '.wizard-overlay',
-              '[id*="wizard"]', '[class*="wizard"]'
-            ];
-            wizardSelectors.forEach(sel => {
-              document.querySelectorAll(sel).forEach(el => {
-                el.style.display = 'none';
-                console.log('🧹 Wizard masqué:', el.id || el.className);
-              });
-            });
-            document.body.style.overflow = '';
-          }, 50);
-
-          sessionStorage.setItem('sangocast_missing_channels', 'true');
-          console.log('✅ Valeurs par défaut enregistrées — démarrage normal');
-          // Fall through to normal init below
-        }
+        console.log('⚠️ Première utilisation - afficher wizard');
+        // Setup wizard will show automatically via setup-wizard.js
+        return;
       }
 
       // Load user configuration
@@ -800,96 +706,34 @@
     }
 
     /**
-     * Initialize all modules — Point 4 fix.
-     * Each module is wrapped in its own try/catch so one failure
-     * never aborts the rest. Results are logged for diagnostics.
+     * Initialize all modules
      */
     async function initializeModules() {
-      const results = await Promise.allSettled([
-
+      try {
         // Age Filter
-        (async () => {
-          await SangocastAgeFilter.init();
-          SangocastAgeFilter.setAgeMode(userConfig.ageMode);
-          console.log('✅ AgeFilter initialisé');
-        })(),
+        await SangocastAgeFilter.init();
+        SangocastAgeFilter.setAgeMode(userConfig.ageMode);
 
         // Prayer Alarms
-        (async () => {
-          const prayerTimes = JSON.parse(
-            localStorage.getItem('sangocast_prayer_times') || '[6,12,18,21]'
-          );
-          SangocastPrayerAlarms.setPrayerTimes(prayerTimes);
-          SangocastPrayerAlarms.setLanguage(userConfig.language);
-          console.log('✅ PrayerAlarms initialisé');
-        })(),
+        const prayerTimes = JSON.parse(localStorage.getItem('sangocast_prayer_times') || '[6,12,18,21]');
+        SangocastPrayerAlarms.setPrayerTimes(prayerTimes);
+        SangocastPrayerAlarms.setLanguage(userConfig.language);
 
         // Content Prioritizer
-        (async () => {
-          // ── Register Bible paths before the prioritizer uses them ────
-          // registerBible() is confirmed in BibleLookupModule_v5 public API.
-          // Filenames match exactly what is in /data/bibles/ (case-sensitive).
-          if (typeof BibleLookupModule !== 'undefined') {
-            const bibleFiles = {
-              'KJV':                             '/data/bibles/kjv.json',
-              'ASV':                             '/data/bibles/ASV.json',
-              'WEB':                             '/data/bibles/English_WEB.json',
-              'DARBY':                           '/data/bibles/darby.json',
-              'ENGLISH DARBY':                   '/data/bibles/english_darby.json',
-              'DOUAY-RHEIMS':                    '/data/bibles/Douay_Rheims.json',
-              'FRENCH DARBY':                    '/data/bibles/french_darby.json',
-              'FRENCH GENEVA':                   '/data/bibles/fregeneve.json',
-              'FRANÇAIS COURANT':                '/data/bibles/french_français_courant.json',
-              'LOUIS SEGOND':                    '/data/bibles/french_louis_segond.json',
-              'LSG MINIMAL':                     '/data/bibles/French_LSG.json',
-              'MARTIN':                          '/data/bibles/French_Martin.json',
-              'MARTIN 1744':                     '/data/bibles/french_martin_1744.json',
-              'NOUVELLE EDITION DE GENÈVE 1979': '/data/bibles/french_nouvelle_edition_de_genève_1979.json',
-              'OSTERVALD':                       '/data/bibles/French_Ostervald.json',
-              'PAROLE DE VIE':                   '/data/bibles/french_parole_de_vie.json',
-              'SEMEUR':                          '/data/bibles/french_semeur.json',
-              'GENEVA':                          '/data/bibles/Geneva.json',
-              'LUTHER GERMAN':                   '/data/bibles/Luther_German.json',
-              'ORTHODOX NT':                     '/data/bibles/Orthodox_NT.json',
-            };
-            Object.entries(bibleFiles).forEach(([code, path]) => {
-              BibleLookupModule.registerBible(code, path);
-            });
-            console.log('📖 Bibles enregistrées:', Object.keys(bibleFiles).length,
-              '— disponibles:', BibleLookupModule.getAvailableBibles());
-          }
-          // ─────────────────────────────────────────────────────────────
-
-          const installDate = localStorage.getItem('sangocast_install_date');
-          await SangocastContentPrioritizer.init(installDate);
-          console.log('✅ ContentPrioritizer initialisé');
-        })(),
+        const installDate = localStorage.getItem('sangocast_install_date');
+        await SangocastContentPrioritizer.init(installDate);
 
         // Horner Engine
-        (async () => {
-          await SangocastHornerEngine.loadPlan();
-          console.log('✅ HornerEngine initialisé');
-        })(),
+        await SangocastHornerEngine.loadPlan();
 
         // Network Manager
-        (async () => {
-          SangocastNetworkManager.addChangeListener(updateNetworkIndicator);
-          await SangocastNetworkManager.performHeartbeat();
-          console.log('✅ NetworkManager initialisé');
-        })()
+        SangocastNetworkManager.addChangeListener(updateNetworkIndicator);
+        await SangocastNetworkManager.performHeartbeat();
 
-      ]);
-
-      // Report any module failures without stopping the app
-      results.forEach((r, i) => {
-        if (r.status === 'rejected') {
-          console.warn(`⚠️ Module [${i}] non initialisé:`, r.reason?.message || r.reason);
-        }
-      });
-
-      const failed  = results.filter(r => r.status === 'rejected').length;
-      const success = results.length - failed;
-      console.log(`📦 Modules: ${success}/${results.length} initialisés`);
+        console.log('✅ Modules initialisés');
+      } catch (error) {
+        console.error('❌ Erreur initialisation modules:', error);
+      }
     }
 
     /**
@@ -900,20 +744,8 @@
       setInterval(updateClock, 1000);
       updateClock();
 
-      // Update content every 10 minutes — Point 8 fix:
-      // skip the fetch when offline to avoid spamming errors.
-      // When back online, the NetworkManager change listener triggers
-      // updateContent() automatically via the heartbeat mechanism.
-      setInterval(() => {
-        const status = typeof SangocastNetworkManager !== 'undefined'
-          ? SangocastNetworkManager.getStatus()
-          : { isOnline: true }; // assume online if manager not loaded
-        if (status.isOnline) {
-          updateContent();
-        } else {
-          console.log('📵 Hors ligne — rotation TESTING_PLAN maintenue, fetch ignoré');
-        }
-      }, 10 * 60 * 1000);
+      // Update content every 10 minutes
+      setInterval(updateContent, 10 * 60 * 1000);
 
       // Update network every 5 seconds
       setInterval(() => {
@@ -990,31 +822,6 @@
 
         currentContent = content;
 
-        // ── Detect prioritizer's own internal fallback ───────────────
-        // When all data files are missing/empty, content-prioritizer.js
-        // returns a hardcoded Psalm 23:1 rather than throwing. It never
-        // reaches our catch block, so the same verse stays on screen
-        // forever. We detect this and hand off to the TESTING_PLAN
-        // rotation instead, so the screen keeps moving.
-        const isFallbackVerse =
-          content.source === 'fallback' ||                        // explicit flag if prioritizer sets it
-          content.priority === 7 ||                               // PRIORITÉ 7 = internal fallback
-          (content.type === 'text' &&
-           content.content &&
-           content.content.reference &&
-           content.content.reference.includes('23:1') &&
-           content.content.text &&
-           content.content.text.includes('shepherd'));            // Psalm 23:1 fingerprint
-
-        if (isFallbackVerse) {
-          console.log('🔄 Priorité 7 détectée — rotation TESTING_PLAN activée');
-          startFallbackRotation();
-          return;
-        }
-
-        // Real content received — stop fallback rotation if it was running
-        stopFallbackRotation();
-
         // Display content
         displayContent(content);
 
@@ -1023,7 +830,7 @@
       } catch (error) {
         console.error('❌ Erreur mise à jour contenu:', error);
         console.log('📖 SangoCast › Basculement vers le plan de lecture par défaut...');
-        startFallbackRotation();
+        displayFallbackVerse();
       }
     }
 
@@ -1399,29 +1206,6 @@
     ];
 
     /**
-     * Start the TESTING_PLAN rotation timer.
-     * Called when we detect the prioritizer has no real content to serve.
-     * Runs every 10 minutes independently of updateContent().
-     * Clears itself if updateContent() later gets real content.
-     */
-    function startFallbackRotation() {
-      if (fallbackTimerId) return; // already running
-      console.log('⏱️ Rotation TESTING_PLAN démarrée (10 min)');
-      displayFallbackVerse(); // show immediately
-      fallbackTimerId = setInterval(() => {
-        displayFallbackVerse();
-      }, 10 * 60 * 1000);
-    }
-
-    function stopFallbackRotation() {
-      if (fallbackTimerId) {
-        clearInterval(fallbackTimerId);
-        fallbackTimerId = null;
-        console.log('⏹️ Rotation TESTING_PLAN arrêtée — contenu réel disponible');
-      }
-    }
-
-    /**
      * Build a human-readable verse reference string.
      * e.g. "John 3:16" or "Psalm 23:1-3"
      */
@@ -1453,9 +1237,11 @@
       let verseText   = entry.commentary;   // safe offline baseline
 
       // -- Attempt BibleLookup if the module is available ------------------
-      if (typeof BibleLookupModule !== 'undefined') {
+      // NOTE: le module s'appelle SangocastBibleLookup (pas BibleLookupModule)
+      //       et expose .lookupVerse() (pas .lookup())
+      if (typeof SangocastBibleLookup !== 'undefined') {
         try {
-          const result = await BibleLookupModule.lookup({
+          const result = await SangocastBibleLookup.lookupVerse({
             book:    entry.book,
             chapter: entry.chapter,
             verses:  entry.verses,
@@ -1463,6 +1249,8 @@
           });
           if (result && result.text) {
             verseText = result.text;
+          } else if (result && result.error) {
+            console.warn('📖 BibleLookup erreur:', result.error, '— affichage commentaire pour:', reference);
           }
         } catch (e) {
           // BibleLookup failed (no network, no cache) — commentary text stays
@@ -1544,33 +1332,6 @@
       
       document.getElementById('channel-name').textContent = channelName;
       document.getElementById('channel-id').textContent = userConfig.channelId;
-
-      // ── Missing channels.json warning badge ──────────────────────────
-      // sessionStorage flag is set only when auto-defaults were applied.
-      // It disappears automatically on the next page refresh, so once
-      // channels.json is restored the badge is gone without manual cleanup.
-      const missingChannels = sessionStorage.getItem('sangocast_missing_channels');
-      const existingBadge   = document.getElementById('missing-channels-badge');
-
-      if (missingChannels && !existingBadge) {
-        const badge = document.createElement('div');
-        badge.id = 'missing-channels-badge';
-        badge.style.cssText = `
-          margin-top: 10px;
-          padding: 6px 10px;
-          background: rgba(251, 191, 36, 0.25);
-          border: 1px solid rgba(251, 191, 36, 0.6);
-          border-radius: 8px;
-          font-size: 12px;
-          color: #fef3c7;
-          line-height: 1.4;
-        `;
-        badge.innerHTML = '⚠️ <strong>channels.json</strong> introuvable<br>Plan de lecture par défaut actif';
-        document.getElementById('channel-info').appendChild(badge);
-        console.warn('🟡 Badge affiché: channels.json manquant');
-      }
-      // ─────────────────────────────────────────────────────────────────
-
       document.getElementById('channel-info').style.display = 'block';
     }
 
@@ -1585,21 +1346,13 @@
           const data = await response.json();
           availableChannels = data.channels || [];
           
-          // Populate channel dropdown — handle both flat and nested formats
+          // Populate channel dropdown
           const channelSelect = document.getElementById('setting-channel');
-          channelSelect.innerHTML = availableChannels.map(ch => {
-            // Nested format: ch.metadata.name  (new channels.json)
-            // Flat format:   ch.name           (old channels.json)
-            const name = (ch.metadata && ch.metadata.name) || ch.name || ch.id;
-            return `<option value="${ch.id}" ${ch.id === userConfig.channelId ? 'selected' : ''}>
-              ${name}
-            </option>`;
-          }).join('');
-
-          // Show fallback message if dropdown is still empty
-          if (!channelSelect.innerHTML.trim()) {
-            channelSelect.innerHTML = `<option value="${userConfig.channelId}">${userConfig.channelId} (actuel)</option>`;
-          }
+          channelSelect.innerHTML = availableChannels.map(ch => `
+            <option value="${ch.id}" ${ch.id === userConfig.channelId ? 'selected' : ''}>
+              ${ch.metadata.name}
+            </option>
+          `).join('');
         }
       } catch (error) {
         console.warn('Could not load channels:', error);
@@ -1649,11 +1402,6 @@
 
       // Refresh UI labels for newly selected language
       applyTranslations();
-
-      // Fix Point 5: refresh network indicator text in the new language
-      if (typeof SangocastNetworkManager !== 'undefined') {
-        updateNetworkIndicator(SangocastNetworkManager.getStatus());
-      }
 
       // Reload content
       updateContent();

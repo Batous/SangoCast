@@ -185,6 +185,7 @@ const SangocastSetupWizard = (() => {
     const style = document.createElement('style');
     style.id = 'sangocast-wizard-styles';
     style.textContent = `
+      /* ─── Root container ──────────────────────────────────────────────── */
       #sangocast-setup-wizard {
         position: fixed;
         top: 0;
@@ -194,7 +195,16 @@ const SangocastSetupWizard = (() => {
         z-index: 999999;
       }
 
-      .wizard-overlay {
+      /* Nuclear reset: ID-scoped so (1,0,0) specificity beats any app class rule,
+         even those with !important that target generic elements like div/span.
+         This is the real fix for white-text inheritance from the host app. */
+      #sangocast-setup-wizard * {
+        box-sizing: border-box;
+        color: inherit;
+      }
+
+      /* ─── Overlay ─────────────────────────────────────────────────────── */
+      #sangocast-setup-wizard .wizard-overlay {
         position: absolute;
         top: 0;
         left: 0;
@@ -204,7 +214,8 @@ const SangocastSetupWizard = (() => {
         backdrop-filter: blur(4px);
       }
 
-      .wizard-container {
+      /* ─── Container ───────────────────────────────────────────────────── */
+      #sangocast-setup-wizard .wizard-container {
         position: absolute;
         top: 50%;
         left: 50%;
@@ -213,19 +224,20 @@ const SangocastSetupWizard = (() => {
         max-width: 600px;
         max-height: 90vh;
         background: white;
-        color: #111827;  /* override inherited white color from .app-container */
+        color: #111827 !important; /* anchor: all children inherit this dark color */
         border-radius: 20px;
         box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
         display: flex;
         flex-direction: column;
       }
 
-      .wizard-progress {
+      /* ─── Progress ────────────────────────────────────────────────────── */
+      #sangocast-setup-wizard .wizard-progress {
         padding: 24px 24px 16px;
         border-bottom: 1px solid #e5e7eb;
       }
 
-      .progress-bar {
+      #sangocast-setup-wizard .progress-bar {
         height: 8px;
         background: #e5e7eb;
         border-radius: 4px;
@@ -233,26 +245,27 @@ const SangocastSetupWizard = (() => {
         margin-bottom: 12px;
       }
 
-      .progress-fill {
+      #sangocast-setup-wizard .progress-fill {
         height: 100%;
         background: linear-gradient(90deg, #667eea 0%, #764ba2 100%);
         transition: width 0.3s ease;
         width: 12.5%;
       }
 
-      .progress-text {
+      #sangocast-setup-wizard .progress-text {
         font-size: 14px;
-        color: #666;
+        color: #666 !important;
         font-weight: 600;
       }
 
-      .wizard-content {
+      /* ─── Content & actions ───────────────────────────────────────────── */
+      #sangocast-setup-wizard .wizard-content {
         flex: 1;
         overflow-y: auto;
         padding: 32px 24px;
       }
 
-      .wizard-actions {
+      #sangocast-setup-wizard .wizard-actions {
         padding: 16px 24px;
         border-top: 1px solid #e5e7eb;
         display: flex;
@@ -260,7 +273,7 @@ const SangocastSetupWizard = (() => {
         gap: 12px;
       }
 
-      .wizard-actions button {
+      #sangocast-setup-wizard .wizard-actions button {
         flex: 1;
         padding: 14px 24px;
         border: none;
@@ -271,51 +284,53 @@ const SangocastSetupWizard = (() => {
         transition: all 0.2s;
       }
 
-      .btn-primary {
+      #sangocast-setup-wizard .btn-primary {
         background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-        color: white;
+        color: white !important;
       }
 
-      .btn-primary:hover {
+      #sangocast-setup-wizard .btn-primary:hover {
         transform: translateY(-2px);
         box-shadow: 0 4px 12px rgba(102, 126, 234, 0.4);
       }
 
-      .btn-primary:disabled {
+      #sangocast-setup-wizard .btn-primary:disabled {
         opacity: 0.5;
         cursor: not-allowed;
         transform: none;
       }
 
-      .btn-secondary {
+      #sangocast-setup-wizard .btn-secondary {
         background: #f3f4f6;
-        color: #4b5563;
+        color: #4b5563 !important;
       }
 
-      .btn-secondary:hover {
+      #sangocast-setup-wizard .btn-secondary:hover {
         background: #e5e7eb;
       }
 
-      .step-title {
+      /* ─── Step typography ─────────────────────────────────────────────── */
+      #sangocast-setup-wizard .step-title {
         font-size: 28px;
         font-weight: 700;
         color: #1f2937 !important;
         margin-bottom: 12px;
       }
 
-      .step-description {
+      #sangocast-setup-wizard .step-description {
         font-size: 16px;
         color: #6b7280 !important;
         margin-bottom: 32px;
         line-height: 1.6;
       }
 
-      .option-grid {
+      /* ─── Option cards ────────────────────────────────────────────────── */
+      #sangocast-setup-wizard .option-grid {
         display: grid;
         gap: 12px;
       }
 
-      .option-card {
+      #sangocast-setup-wizard .option-card {
         padding: 20px;
         border: 2px solid #e5e7eb;
         border-radius: 12px;
@@ -325,38 +340,38 @@ const SangocastSetupWizard = (() => {
         color: #111827 !important;
       }
 
-      .option-card:hover {
+      #sangocast-setup-wizard .option-card:hover {
         border-color: #667eea;
         transform: translateY(-2px);
       }
 
-      .option-card.selected {
+      #sangocast-setup-wizard .option-card.selected {
         border-color: #667eea;
         background: #f5f3ff;
       }
 
-      .option-icon {
+      #sangocast-setup-wizard .option-icon {
         font-size: 32px;
         margin-bottom: 8px;
       }
 
-      .option-title {
+      #sangocast-setup-wizard .option-title {
         font-weight: 700;
         font-size: 16px;
         margin-bottom: 4px;
         color: #1f2937 !important;
       }
 
-      .option-desc {
+      #sangocast-setup-wizard .option-desc {
         font-size: 14px;
         color: #6b7280 !important;
       }
 
-      .option-badge {
+      #sangocast-setup-wizard .option-badge {
         display: inline-block;
         padding: 4px 12px;
         background: #10b981;
-        color: white;
+        color: white !important;
         border-radius: 12px;
         font-size: 11px;
         font-weight: 600;
@@ -364,7 +379,8 @@ const SangocastSetupWizard = (() => {
         margin-left: 8px;
       }
 
-      .channel-card {
+      /* ─── Channel cards ───────────────────────────────────────────────── */
+      #sangocast-setup-wizard .channel-card {
         display: flex;
         align-items: center;
         gap: 16px;
@@ -378,54 +394,53 @@ const SangocastSetupWizard = (() => {
         color: #111827 !important;
       }
 
-      .channel-card:hover {
+      #sangocast-setup-wizard .channel-card:hover {
         border-color: #667eea;
       }
 
-      .channel-card.selected {
+      #sangocast-setup-wizard .channel-card.selected {
         border-color: #667eea;
         background: #f5f3ff;
       }
 
-      .channel-icon {
+      #sangocast-setup-wizard .channel-icon {
         font-size: 48px;
         width: 60px;
         text-align: center;
-        color: #111827;
+        color: #111827 !important;
       }
 
-      .channel-info {
+      #sangocast-setup-wizard .channel-info {
         flex: 1;
         color: #111827 !important;
       }
 
-      .channel-name {
+      #sangocast-setup-wizard .channel-name {
         font-weight: 700;
         font-size: 16px;
         margin-bottom: 4px;
         color: #111827 !important;
       }
 
-      .channel-id {
+      #sangocast-setup-wizard .channel-id {
         font-size: 12px;
         color: #667eea !important;
         font-family: monospace;
         margin-bottom: 4px;
       }
 
-      .channel-desc {
+      #sangocast-setup-wizard .channel-desc {
         font-size: 13px;
         color: #6b7280 !important;
       }
-        color: #6b7280;
-      }
 
-      .checkbox-group {
+      /* ─── Checkboxes ──────────────────────────────────────────────────── */
+      #sangocast-setup-wizard .checkbox-group {
         display: grid;
         gap: 12px;
       }
 
-      .checkbox-item {
+      #sangocast-setup-wizard .checkbox-item {
         display: flex;
         align-items: center;
         gap: 12px;
@@ -435,18 +450,20 @@ const SangocastSetupWizard = (() => {
         cursor: pointer;
       }
 
-      .checkbox-item input[type="checkbox"] {
+      #sangocast-setup-wizard .checkbox-item input[type="checkbox"] {
         width: 20px;
         height: 20px;
         cursor: pointer;
       }
 
-      .checkbox-label {
+      #sangocast-setup-wizard .checkbox-label {
         font-size: 15px;
         font-weight: 500;
+        color: #1f2937 !important;
       }
 
-      .storage-info {
+      /* ─── Storage display ─────────────────────────────────────────────── */
+      #sangocast-setup-wizard .storage-info {
         display: flex;
         justify-content: space-between;
         padding: 16px;
@@ -455,58 +472,60 @@ const SangocastSetupWizard = (() => {
         margin-bottom: 20px;
       }
 
-      .storage-item {
+      #sangocast-setup-wizard .storage-item {
         text-align: center;
       }
 
-      .storage-value {
+      #sangocast-setup-wizard .storage-value {
         font-size: 24px;
         font-weight: 700;
-        color: #10b981;
+        color: #10b981 !important;
       }
 
-      .storage-label {
+      #sangocast-setup-wizard .storage-label {
         font-size: 12px;
-        color: #059669;
+        color: #059669 !important;
         text-transform: uppercase;
         margin-top: 4px;
       }
 
-      .download-progress {
+      /* ─── Download progress ───────────────────────────────────────────── */
+      #sangocast-setup-wizard .download-progress {
         margin-top: 24px;
       }
 
-      .download-item {
+      #sangocast-setup-wizard .download-item {
         margin-bottom: 16px;
       }
 
-      .download-name {
+      #sangocast-setup-wizard .download-name {
         font-size: 14px;
         font-weight: 600;
         margin-bottom: 8px;
-        color: #1f2937;
+        color: #1f2937 !important;
       }
 
-      .download-bar {
+      #sangocast-setup-wizard .download-bar {
         height: 12px;
         background: #e5e7eb;
         border-radius: 6px;
         overflow: hidden;
       }
 
-      .download-fill {
+      #sangocast-setup-wizard .download-fill {
         height: 100%;
         background: linear-gradient(90deg, #10b981 0%, #059669 100%);
         transition: width 0.3s;
       }
 
+      /* ─── Responsive ──────────────────────────────────────────────────── */
       @media (max-width: 640px) {
-        .wizard-container {
+        #sangocast-setup-wizard .wizard-container {
           width: 95%;
           max-height: 95vh;
         }
         
-        .step-title {
+        #sangocast-setup-wizard .step-title {
           font-size: 24px;
         }
       }
@@ -829,10 +848,11 @@ const SangocastSetupWizard = (() => {
     const channel = availableChannels.find(ch => ch.id === channelId);
     if (channel) {
       preferences.channelMetadata = channel.metadata;
-      // Auto-select recommended Bible
-      if (channel.defaultSettings?.recommendedBible) {
-        preferences.bibleVersions = [channel.defaultSettings.recommendedBible];
-      }
+      // All current channels recommend KJV, but French users should default to LSG.
+      // Only override the auto-pick if bibleVersions is still at its empty default.
+      const channelBible = channel.defaultSettings?.recommendedBible || 'kjv';
+      const isFrench = preferences.language.startsWith('fr');
+      preferences.bibleVersions = [isFrench ? 'lsg' : channelBible.toLowerCase()];
     }
     showStep(currentStep);
   }
@@ -853,23 +873,35 @@ const SangocastSetupWizard = (() => {
  * ÉTAPE 6: Sélection Bible
  */
 function getBibleHTML() {
-  const bibles = [
-    { code: 'darby', name: 'Darby (Français)', size: '≈4.2 MB', free: true, desc: 'Traduction littérale française classique' },
-    { code: 'crampon', name: 'Crampon', size: '≈4.5 MB', free: true, desc: 'Bible catholique française traditionnelle' },
-    { code: 'geneve1669', name: 'Genève 1669', size: '≈4.1 MB', free: true, desc: 'Bible de Genève révisée 1669' },
-    { code: 'martin1744', name: 'Martin 1744', size: '≈4.3 MB', free: true, desc: 'Traduction protestante classique française' },
-    { code: 'darby-fr', name: 'Darby Français', size: '≈4.2 MB', free: true, desc: 'Version Darby en français' },
-    { code: 'francais-courant', name: 'Français Courant', size: '≈4.0 MB', free: true, desc: 'Langage courant, facile à lire' },
-    { code: 'neg1979', name: 'Nouvelle Édition de Genève 1979', size: '≈4.4 MB', free: true, desc: 'Révision moderne de la Bible de Genève' },
-    { code: 'parole-de-vie', name: 'Parole de Vie', size: '≈3.8 MB', free: true, desc: 'Traduction dynamique, très accessible' },
-    { code: 'semeur', name: 'Semeur', size: '≈4.1 MB', free: true, desc: 'Bible Semeur – langage contemporain' },
-    { code: 'kjv', name: 'King James Version', size: '≈4.0 MB', free: true, desc: 'Anglais classique 1611, domaine public' }
-    // kjvmini exclu comme demandé (probablement version compressée ou incomplète)
+  // Each entry has a lang tag: 'fr' = French only, 'en' = English only, 'all' = always shown.
+  // This replaces the broken name-string filter from the previous version.
+  // Removed: crampon (no file found), darby-fr (duplicate of darby).
+  // Added: lsg, ostervald, louis-segond (files confirmed present).
+  const allBibles = [
+    { code: 'lsg',             lang: 'fr',  name: 'Louis Segond (LSG)',            size: '≈4.2 MB', free: true,  desc: 'Traduction protestante la plus répandue en français' },
+    { code: 'darby',           lang: 'fr',  name: 'Darby (Français)',              size: '≈4.2 MB', free: true,  desc: 'Traduction littérale française classique' },
+    { code: 'louis-segond',    lang: 'fr',  name: 'Louis Segond (variante)',       size: '≈4.2 MB', free: true,  desc: 'Fichier French_Louis_segon.json — même famille LSG' },
+    { code: 'martin1744',      lang: 'fr',  name: 'Martin 1744',                   size: '≈4.3 MB', free: true,  desc: 'Traduction protestante classique française' },
+    { code: 'ostervald',       lang: 'fr',  name: 'Ostervald',                     size: '≈4.2 MB', free: true,  desc: 'Traduction réformée française (French_Osterwald.json)' },
+    { code: 'geneve1669',      lang: 'fr',  name: 'Genève 1669',                   size: '≈4.1 MB', free: true,  desc: 'Bible de Genève révisée 1669 (Fregeneve.json)' },
+    { code: 'neg1979',         lang: 'fr',  name: 'Nouvelle Édition de Genève 1979', size: '≈4.4 MB', free: true, desc: 'Révision moderne de la Bible de Genève' },
+    { code: 'francais-courant',lang: 'fr',  name: 'Français Courant',              size: '≈4.0 MB', free: true,  desc: 'Langage courant, facile à lire' },
+    { code: 'parole-de-vie',   lang: 'fr',  name: 'Parole de Vie',                 size: '≈3.8 MB', free: true,  desc: 'Traduction dynamique, très accessible' },
+    { code: 'semeur',          lang: 'fr',  name: 'Semeur',                        size: '≈4.1 MB', free: true,  desc: 'Bible Semeur – langage contemporain (French_sereur.json)' },
+    { code: 'kjv',             lang: 'en',  name: 'King James Version',            size: '≈4.0 MB', free: true,  desc: 'Anglais classique 1611, domaine public' },
+    { code: 'web',             lang: 'en',  name: 'World English Bible',           size: '≈4.0 MB', free: true,  desc: 'Anglais moderne, domaine public (English_WEB.json)' },
+    { code: 'asv',             lang: 'en',  name: 'American Standard Version',     size: '≈4.0 MB', free: true,  desc: 'Anglais classique révisé (ASV.json)' },
   ];
 
-  // Bible recommandée par défaut (on peut la changer selon la tradition plus tard)
-  
-  const recommended = preferences.bibleVersions[0] || 'martin1744'; // exemple par défaut protestant/français
+  // Filter: French users see French + KJV; English/other users see English + all French available
+  const isFrench = preferences.language.startsWith('fr');
+  const bibles = isFrench
+    ? allBibles.filter(b => b.lang === 'fr' || b.code === 'kjv')
+    : allBibles; // non-French users can browse everything
+
+  // Default recommended Bible: respect channel pick if set, else language-appropriate fallback
+  const recommended = preferences.bibleVersions[0] ||
+    (isFrench ? 'lsg' : 'kjv');
 
   return `
     <div class="step-title">📖 Sélectionnez Vos Bibles</div>

@@ -429,24 +429,54 @@ const SangocastContentPrioritizer = (() => {
   }
 
   /**
-   * PRIORITÉ 7: FALLBACK (Psaume 23:1)
+   * PRIORITÉ 7: FALLBACK — rotation sur un ensemble de versets sûrs
+   * Utilise SangocastBibleLookup.lookupVerse() pour obtenir le texte réel.
+   * Si le lookup échoue, le texte de secours est fourni directement.
    */
+  // Versets de secours pour le fallback (utilisés si BibleLookup indisponible)
+  const FALLBACK_VERSES = [
+    { book: 'Psalms',       chapter: 23,  verses: [1],    text: 'The Lord is my shepherd; I shall not want.' },
+    { book: 'John',         chapter: 3,   verses: [16],   text: 'For God so loved the world, that he gave his only begotten Son.' },
+    { book: 'Philippians',  chapter: 4,   verses: [13],   text: 'I can do all things through Christ which strengtheneth me.' },
+    { book: 'Proverbs',     chapter: 3,   verses: [5, 6], text: 'Trust in the Lord with all thine heart; and lean not unto thine own understanding.' },
+    { book: 'Romans',       chapter: 8,   verses: [28],   text: 'And we know that all things work together for good to them that love God.' },
+    { book: 'Isaiah',       chapter: 40,  verses: [31],   text: 'But they that wait upon the Lord shall renew their strength.' },
+    { book: 'Matthew',      chapter: 11,  verses: [28],   text: 'Come unto me, all ye that labour and are heavy laden, and I will give you rest.' },
+    { book: 'Lamentations', chapter: 3,   verses: [22, 23], text: 'It is of the Lord\'s mercies that we are not consumed, because his compassions fail not.' }
+  ];
+  let fallbackRotationIndex = 0;
+
   async function getFallback(bibleVersion = 'KJV') {
-    console.log('🆘 PRIORITÉ 7: Fallback (Psaume 23:1)');
-    
-    const verse = await SangocastBibleLookup.lookupVerse({
+    // Rotation sur les versets de secours
+    const entry = FALLBACK_VERSES[fallbackRotationIndex % FALLBACK_VERSES.length];
+    fallbackRotationIndex++;
+
+    console.log('🆘 PRIORITÉ 7: Fallback →', entry.book, entry.chapter);
+
+    // Tentative d'obtenir le texte réel via BibleLookup
+    const verseResult = await SangocastBibleLookup.lookupVerse({
       version: bibleVersion,
-      book: 'Psalms',
-      chapter: 23,
-      verses: [1]
+      book: entry.book,
+      chapter: entry.chapter,
+      verses: entry.verses
     });
+
+    // Si lookup réussit, utiliser le texte réel ; sinon texte de secours intégré
+    const verseText = (verseResult && verseResult.text) ? verseResult.text : entry.text;
+    const reference = (verseResult && verseResult.reference)
+      ? verseResult.reference
+      : `${entry.book} ${entry.chapter}:${entry.verses.join(',')}`;
+
+    if (verseResult && verseResult.error) {
+      console.warn('⚠️ Fallback BibleLookup échoué:', verseResult.error, '— texte embarqué utilisé');
+    }
 
     return {
       type: 'text',
       priority: PRIORITIES.FALLBACK,
       content: {
-        reference: verse.reference,
-        text: verse.text || 'The Lord is my shepherd; I shall not want.',
+        reference: reference,
+        text: verseText,
         version: bibleVersion,
         isFallback: true
       }
