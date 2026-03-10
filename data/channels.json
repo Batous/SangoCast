@@ -121,11 +121,11 @@
     },
 
     {
-      "id": "SCR-EN-CAT-ROSARY",
+      "id": "SCR-EN-CAT-GOSPEL-MISTERIES", "   Gospel Mysteries  "
       "type": "SCR",
       "metadata": {
-        "name": "Rosary Meditations",
-        "description": "Daily meditations for the Holy Rosary — mysteries, prayers, and reflections.",
+        "name": "GOSPEL-MISTERIES Meditations",
+        "description": "Daily meditations for the Holy GOSPEL-MISTERIES — mysteries, prayers, and reflections.",
         "tradition": "western_latin",
         "featured": false,
         "author": "SangoCast Team — batous.kabuika@proton.me",
