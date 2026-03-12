@@ -2,7 +2,6 @@
   "channels": [
 
     {
-		
       "id": "SCR-EN-GL-HOPE",
       "type": "SCR",
       "metadata": {
