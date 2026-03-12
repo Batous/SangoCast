@@ -102,6 +102,47 @@ const SangocastSetupWizard = (() => {
   /**
    * Charger les chaînes disponibles
    */
+  function getDefaultChannels() {
+    return [
+      {
+        id: 'SCR-EN-GL-0001',
+        type: 'SCR',
+        metadata: {
+          name: 'Global Daily Scripture',
+          description: 'A Bible verse for each day of the year — balanced, accessible, and open to all.',
+          tradition: 'interconfessional',
+          featured: true
+        },
+        defaultSettings: { readingPlan: 'horner', recommendedBible: 'KJV' }
+      },
+      {
+        id: 'SCR-EN-GL-HOPE',
+        type: 'SCR',
+        metadata: {
+          name: 'Hope Verses',
+          description: 'Daily scriptures anchored in the hope we have in Christ.',
+          tradition: 'interconfessional',
+          featured: true
+        },
+        defaultSettings: { recommendedBible: 'KJV' }
+      },
+      {
+        id: 'SCR-EN-GL-PRAISE',
+        type: 'SCR',
+        metadata: {
+          name: 'Praise & Worship',
+          description: 'Verses that call the soul to worship — Psalms, hymns, and spiritual songs.',
+          tradition: 'interconfessional',
+          featured: true
+        },
+        defaultSettings: { recommendedBible: 'KJV' }
+      }
+    ];
+  }
+
+  /**
+   * Charger les chaînes disponibles
+   */
   async function loadAvailableChannels() {
     try {
       const response = await fetch('/data/channels.json');
@@ -109,25 +150,14 @@ const SangocastSetupWizard = (() => {
         const data = await response.json();
         availableChannels = (data.channels || []).map(normalizeChannel);
         console.log('✅ Channels chargées:', availableChannels.length);
+      } else {
+        // 404 or other non-ok status — use built-in defaults instead of looping forever
+        console.warn('⚠️ channels.json non trouvé (HTTP ' + response.status + ') — utilisation des chaînes par défaut');
+        availableChannels = getDefaultChannels();
       }
     } catch (error) {
       console.warn('⚠️ Impossible de charger channels:', error);
-      // Channels par défaut
-      availableChannels = [
-        {
-          id: 'SCR-EN-GL-0001',
-          metadata: {
-            name: 'Global Daily Scripture',
-            description: 'Daily Bible reading using Horner\'s plan',
-            tradition: 'interconfessional',
-            featured: true
-          },
-          defaultSettings: {
-            readingPlan: 'horner',
-            recommendedBible: 'KJV'
-          }
-        }
-      ];
+      availableChannels = getDefaultChannels();
     }
   }
 
@@ -195,12 +225,12 @@ const SangocastSetupWizard = (() => {
         z-index: 999999;
       }
 
-      /* Nuclear reset: ID-scoped so (1,0,0) specificity beats any app class rule,
-         even those with !important that target generic elements like div/span.
-         This is the real fix for white-text inheritance from the host app. */
+      /* Nuclear reset: ID-scoped so (1,0,0) specificity beats any app class rule.
+         color: inherit !important ensures the container's dark color cascades
+         down even when the host app sets color: white on generic elements. */
       #sangocast-setup-wizard * {
-        box-sizing: border-box;
-        color: inherit;
+        box-sizing: border-box !important;
+        color: inherit !important;
       }
 
       /* ─── Overlay ─────────────────────────────────────────────────────── */
@@ -220,8 +250,8 @@ const SangocastSetupWizard = (() => {
         top: 50%;
         left: 50%;
         transform: translate(-50%, -50%);
-        width: 90%;
-        max-width: 600px;
+        width: 92%;
+        max-width: 760px;
         max-height: 90vh;
         background: white;
         color: #111827 !important; /* anchor: all children inherit this dark color */
@@ -379,59 +409,78 @@ const SangocastSetupWizard = (() => {
         margin-left: 8px;
       }
 
+      /* ─── Channel grid (2-col on wide, 1-col on mobile) ──────────────── */
+      #sangocast-setup-wizard .channel-grid {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 12px;
+      }
+
+      @media (max-width: 540px) {
+        #sangocast-setup-wizard .channel-grid {
+          grid-template-columns: 1fr;
+        }
+      }
+
       /* ─── Channel cards ───────────────────────────────────────────────── */
       #sangocast-setup-wizard .channel-card {
         display: flex;
-        align-items: center;
-        gap: 16px;
+        align-items: flex-start;
+        gap: 14px;
         padding: 16px;
         border: 2px solid #e5e7eb;
         border-radius: 12px;
         cursor: pointer;
         transition: all 0.2s;
-        margin-bottom: 12px;
-        background: #ffffff;
+        background-color: #ffffff !important;
+        background: #ffffff !important;
         color: #111827 !important;
       }
 
       #sangocast-setup-wizard .channel-card:hover {
         border-color: #667eea;
+        box-shadow: 0 2px 8px rgba(102,126,234,0.15);
       }
 
       #sangocast-setup-wizard .channel-card.selected {
         border-color: #667eea;
-        background: #f5f3ff;
+        background-color: #f5f3ff !important;
+        background: #f5f3ff !important;
       }
 
       #sangocast-setup-wizard .channel-icon {
-        font-size: 48px;
-        width: 60px;
+        font-size: 36px;
+        width: 48px;
+        min-width: 48px;
         text-align: center;
-        color: #111827 !important;
+        line-height: 1;
+        padding-top: 2px;
       }
 
       #sangocast-setup-wizard .channel-info {
         flex: 1;
-        color: #111827 !important;
+        min-width: 0;
       }
 
       #sangocast-setup-wizard .channel-name {
-        font-weight: 700;
-        font-size: 16px;
-        margin-bottom: 4px;
+        font-weight: 700 !important;
+        font-size: 15px !important;
+        margin-bottom: 3px !important;
         color: #111827 !important;
+        line-height: 1.3;
       }
 
       #sangocast-setup-wizard .channel-id {
-        font-size: 12px;
+        font-size: 11px !important;
         color: #667eea !important;
-        font-family: monospace;
-        margin-bottom: 4px;
+        font-family: monospace !important;
+        margin-bottom: 5px !important;
       }
 
       #sangocast-setup-wizard .channel-desc {
-        font-size: 13px;
-        color: #6b7280 !important;
+        font-size: 13px !important;
+        color: #4b5563 !important;
+        line-height: 1.45 !important;
       }
 
       /* ─── Checkboxes ──────────────────────────────────────────────────── */
@@ -521,12 +570,16 @@ const SangocastSetupWizard = (() => {
       /* ─── Responsive ──────────────────────────────────────────────────── */
       @media (max-width: 640px) {
         #sangocast-setup-wizard .wizard-container {
-          width: 95%;
+          width: 98%;
           max-height: 95vh;
         }
         
         #sangocast-setup-wizard .step-title {
-          font-size: 24px;
+          font-size: 22px;
+        }
+
+        #sangocast-setup-wizard .channel-grid {
+          grid-template-columns: 1fr;
         }
       }
     `;
@@ -591,6 +644,9 @@ const SangocastSetupWizard = (() => {
         startDownload();
         break;
     }
+
+    // Override any host-app color rules that make text invisible
+    forceTextColors();
   }
 
   /**
@@ -808,33 +864,75 @@ const SangocastSetupWizard = (() => {
     }
 
     return `
-      <div class="step-title">📺 Choisissez Votre Chaîne</div>
-      <div class="step-description">
+      <div class="step-title" style="font-size:26px;font-weight:700;color:#111827;margin-bottom:10px;">📺 Choisissez Votre Chaîne</div>
+      <div class="step-description" style="font-size:15px;color:#6b7280;margin-bottom:24px;line-height:1.6;">
         Une chaîne définit votre plan de lecture, les enseignements pastoraux et les événements que vous suivez.
       </div>
-      
-      ${filteredChannels.map(channel => `
-        <div class="channel-card ${preferences.channelId === channel.id ? 'selected' : ''}" 
-             onclick="SangocastSetupWizard.selectChannel('${channel.id}')">
-          <div class="channel-icon">${getChannelIcon(channel.type)}</div>
-          <div class="channel-info">
-            <div class="channel-name">
-              ${channel.metadata.name}
-              ${channel.metadata.featured ? '<span class="option-badge">Recommandé</span>' : ''}
+
+      <div class="channel-grid">
+        ${filteredChannels.map(channel => `
+          <div class="channel-card ${preferences.channelId === channel.id ? 'selected' : ''}"
+               onclick="SangocastSetupWizard.selectChannel('${channel.id}')"
+               style="background:#ffffff;border:2px solid ${preferences.channelId === channel.id ? '#667eea' : '#e5e7eb'};border-radius:12px;padding:16px;display:flex;align-items:flex-start;gap:14px;cursor:pointer;">
+            <div class="channel-icon" style="font-size:32px;min-width:40px;text-align:center;">${getChannelIcon(channel.type)}</div>
+            <div class="channel-info" style="flex:1;min-width:0;">
+              <div class="channel-name" style="font-weight:700;font-size:15px;margin-bottom:3px;color:#111827 !important;">
+                <span style="color:#111827;">${channel.metadata.name}</span>
+                ${channel.metadata.featured ? '<span style="display:inline-block;padding:2px 8px;background:#10b981;color:#ffffff;border-radius:10px;font-size:10px;font-weight:700;text-transform:uppercase;margin-left:6px;">Recommandé</span>' : ''}
+              </div>
+              <div class="channel-id" style="font-size:11px;color:#667eea;font-family:monospace;margin-bottom:4px;">${channel.id}</div>
+              <div class="channel-desc" style="font-size:13px;color:#4b5563;line-height:1.45;">${channel.metadata.description || ''}</div>
             </div>
-            <div class="channel-id">${channel.id}</div>
-            <div class="channel-desc">${channel.metadata.description || ''}</div>
           </div>
-        </div>
-      `).join('')}
-      
-      <div style="margin-top: 20px; padding: 16px; background: #f9fafb; border-radius: 8px; font-size: 14px; color: #666;">
-        <strong>💡 Conseil:</strong> Vous pourrez changer de chaîne à tout moment dans les paramètres.
+        `).join('')}
+      </div>
+
+      <div style="margin-top: 20px; padding: 16px; background: #f9fafb; border-radius: 8px; font-size: 14px; color: #4b5563 !important;">
+        <strong style="color: #111827 !important;">💡 Conseil:</strong> Vous pourrez changer de chaîne à tout moment dans les paramètres.
       </div>
     `;
   }
 
-  function getChannelIcon(type) {
+  /**
+   * Force explicit text colors on all rendered step content.
+   * Needed because host-app CSS (e.g. .dark * { color: white !important })
+   * can override even ID-scoped rules. Inline JS style is the only guarantee.
+   */
+  function forceTextColors() {
+    const root = document.getElementById('wizard-content');
+    if (!root) return;
+
+    const rules = [
+      { sel: '.step-title',    color: '#111827' },
+      { sel: '.step-description', color: '#6b7280' },
+      { sel: '.option-title',  color: '#111827' },
+      { sel: '.option-desc',   color: '#6b7280' },
+      { sel: '.channel-name',  color: '#111827' },
+      { sel: '.channel-desc',  color: '#4b5563' },
+      { sel: '.channel-id',    color: '#667eea' },
+      { sel: '.channel-info',  color: '#111827' },
+      { sel: '.checkbox-label',color: '#111827' },
+      { sel: '.download-name', color: '#111827' },
+      { sel: '.storage-label', color: '#059669' },
+      { sel: '.progress-text', color: '#6b7280' },
+    ];
+
+    rules.forEach(({ sel, color }) => {
+      root.querySelectorAll(sel).forEach(el => {
+        el.style.setProperty('color', color, 'important');
+      });
+    });
+
+    // Also force card backgrounds so white text can't hide on white
+    root.querySelectorAll('.option-card, .channel-card').forEach(el => {
+      if (!el.classList.contains('selected')) {
+        el.style.setProperty('background-color', '#ffffff', 'important');
+      }
+      el.style.setProperty('color', '#111827', 'important');
+    });
+  }
+
+
     const icons = {
       'SCR': '📖',
       'LEC': '📅',
