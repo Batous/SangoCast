@@ -790,17 +790,32 @@ const SangocastSetupWizard = (() => {
       </div>
 
       <div>
-        ${filteredChannels.map(channel => `
-          <div onclick="SangocastSetupWizard.selectChannel('${channel.id}')" style="margin-bottom:12px;cursor:pointer;">
-            <div><strong>${channel.metadata.name}</strong> ${channel.metadata.featured ? '<span style="color:#10b981;">(Recommandé)</span>' : ''}</div>
+        ${filteredChannels.map(channel => {
+          const isSelected = preferences.channelId === channel.id;
+          return `
+          <div onclick="SangocastSetupWizard.selectChannel('${channel.id}')"
+               style="margin-bottom:12px;cursor:pointer;padding:12px;border-left:4px solid ${isSelected ? '#667eea' : '#e5e7eb'};background:${isSelected ? '#f5f3ff' : 'transparent'};">
+            <div style="color:${isSelected ? '#667eea' : 'inherit'};font-weight:${isSelected ? '700' : 'normal'};">
+              ${isSelected ? '✅ ' : ''}<strong>${channel.metadata.name}</strong>
+              ${channel.metadata.featured ? '<span style="color:#10b981;">(Recommandé)</span>' : ''}
+            </div>
             <div>ID: ${channel.id}</div>
             <div>Description: ${channel.metadata.description || ''}</div>
             ${channel.metadata.tradition ? `<div>Tradition: ${channel.metadata.tradition.replace(/_/g, ' ')}</div>` : ''}
-          </div>
-        `).join('')}
+          </div>`;
+        }).join('')}
       </div>
 
-      <div style="margin-top:20px;padding:16px;background:#f9fafb;border-radius:8px;font-size:14px;color:#4b5563;">
+      ${preferences.channelId ? `
+        <div style="margin-top:16px;padding:14px;background:#f0fdf4;border:1px solid #86efac;border-radius:8px;font-size:14px;color:#166534;">
+          ✅ <strong>Chaîne chargée :</strong> ${availableChannels.find(c => c.id === preferences.channelId)?.metadata.name || preferences.channelId}
+          <br><span style="font-size:12px;color:#4ade80;">ID: ${preferences.channelId} — prête pour l'installation</span>
+        </div>` : `
+        <div style="margin-top:16px;padding:14px;background:#fefce8;border:1px solid #fde047;border-radius:8px;font-size:14px;color:#854d0e;">
+          ⚠️ Aucune chaîne sélectionnée — cliquez sur une chaîne ci-dessus.
+        </div>`}
+
+      <div style="margin-top:12px;padding:16px;background:#f9fafb;border-radius:8px;font-size:14px;color:#4b5563;">
         <strong style="color:#111827;">💡 Conseil:</strong> Vous pourrez changer de chaîne à tout moment dans les paramètres.
       </div>
     `;
