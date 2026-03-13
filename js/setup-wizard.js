@@ -250,9 +250,9 @@ const SangocastSetupWizard = (() => {
         top: 50%;
         left: 50%;
         transform: translate(-50%, -50%);
-        width: 92%;
+        width: 96%;
         max-width: 760px;
-        max-height: 90vh;
+        max-height: 92vh;
         background: white;
         color: #111827 !important; /* anchor: all children inherit this dark color */
         border-radius: 20px;
@@ -292,11 +292,11 @@ const SangocastSetupWizard = (() => {
       #sangocast-setup-wizard .wizard-content {
         flex: 1;
         overflow-y: auto;
-        padding: 32px 24px;
+        padding: clamp(16px, 4vw, 32px) clamp(14px, 3.5vw, 24px);
       }
 
       #sangocast-setup-wizard .wizard-actions {
-        padding: 16px 24px;
+        padding: clamp(12px, 3vw, 16px) clamp(14px, 3.5vw, 24px);
         border-top: 1px solid #e5e7eb;
         display: flex;
         justify-content: space-between;
@@ -305,11 +305,11 @@ const SangocastSetupWizard = (() => {
 
       #sangocast-setup-wizard .wizard-actions button {
         flex: 1;
-        padding: 14px 24px;
+        padding: clamp(11px, 3vw, 14px) 16px;
         border: none;
         border-radius: 10px;
         font-weight: 600;
-        font-size: 15px;
+        font-size: clamp(14px, 3.8vw, 15px);
         cursor: pointer;
         transition: all 0.2s;
       }
@@ -341,17 +341,19 @@ const SangocastSetupWizard = (() => {
 
       /* ─── Step typography ─────────────────────────────────────────────── */
       #sangocast-setup-wizard .step-title {
-        font-size: 28px;
+        font-size: clamp(20px, 5.5vw, 28px);
         font-weight: 700;
         color: #1f2937 !important;
         margin-bottom: 12px;
+        word-break: break-word;
       }
 
       #sangocast-setup-wizard .step-description {
-        font-size: 16px;
+        font-size: clamp(14px, 3.8vw, 16px);
         color: #6b7280 !important;
-        margin-bottom: 32px;
+        margin-bottom: clamp(20px, 5vw, 32px);
         line-height: 1.6;
+        word-break: break-word;
       }
 
       /* ─── Option cards ────────────────────────────────────────────────── */
@@ -511,10 +513,29 @@ const SangocastSetupWizard = (() => {
         #sangocast-setup-wizard .wizard-container {
           width: 98%;
           max-height: 95vh;
+          border-radius: 14px;
         }
-        
-        #sangocast-setup-wizard .step-title {
-          font-size: 22px;
+      }
+
+      @media (max-width: 480px) {
+        #sangocast-setup-wizard .option-card {
+          padding: 14px;
+        }
+
+        #sangocast-setup-wizard .option-icon {
+          font-size: 24px;
+        }
+
+        #sangocast-setup-wizard .option-title {
+          font-size: clamp(14px, 4vw, 16px);
+        }
+
+        #sangocast-setup-wizard .option-desc {
+          font-size: clamp(12px, 3.2vw, 14px);
+        }
+
+        #sangocast-setup-wizard .checkbox-label {
+          font-size: clamp(13px, 3.5vw, 15px);
         }
       }
     `;
@@ -1217,18 +1238,18 @@ function showSangocastWelcome() {
   const el = document.createElement('div');
   el.id = 'sangocast-welcome';
   el.innerHTML = `
-    <div style="position:fixed;top:0;left:0;right:0;bottom:0;z-index:999998;background:rgba(0,0,0,0.55);backdrop-filter:blur(4px);display:flex;align-items:center;justify-content:center;padding:16px;">
-      <div style="background:#ffffff;border-radius:20px;max-width:640px;width:100%;max-height:90vh;overflow-y:auto;padding:36px 32px 28px;box-shadow:0 24px 64px rgba(0,0,0,0.3);">
+    <div style="position:fixed;top:0;left:0;right:0;bottom:0;z-index:999998;background:rgba(0,0,0,0.55);backdrop-filter:blur(4px);display:flex;align-items:center;justify-content:center;padding:12px;">
+      <div style="background:#ffffff;border-radius:20px;max-width:640px;width:100%;max-height:92vh;overflow-y:auto;padding:clamp(20px,5vw,36px) clamp(16px,4vw,32px) clamp(16px,4vw,28px);box-shadow:0 24px 64px rgba(0,0,0,0.3);">
 
         <!-- Header -->
-        <div style="text-align:center;margin-bottom:24px;">
-          <div style="font-size:36px;margin-bottom:8px;">📺</div>
-          <div style="font-size:22px;font-weight:800;color:#1f2937;line-height:1.3;">SangoCast</div>
-          <div style="font-size:13px;font-weight:600;color:#667eea;letter-spacing:0.08em;text-transform:uppercase;margin-top:4px;">Early Testers Edition</div>
+        <div style="text-align:center;margin-bottom:20px;">
+          <div style="font-size:clamp(28px,8vw,36px);margin-bottom:8px;">📺</div>
+          <div style="font-size:clamp(18px,5vw,22px);font-weight:800;color:#1f2937;line-height:1.3;">SangoCast</div>
+          <div style="font-size:clamp(11px,3vw,13px);font-weight:600;color:#667eea;letter-spacing:0.08em;text-transform:uppercase;margin-top:4px;">Early Testers Edition</div>
         </div>
 
         <!-- Body text -->
-        <div style="font-size:15px;color:#374151;line-height:1.8;">
+        <div style="font-size:clamp(14px,3.8vw,15px);color:#374151;line-height:1.8;word-break:break-word;overflow-wrap:break-word;">
 
           <p style="margin:0 0 14px;">Beloved in the Lord, welcome to <strong>SangoCast</strong> — the Early Testers Edition.</p>
 
@@ -1256,16 +1277,16 @@ function showSangocastWelcome() {
         </div>
 
         <!-- Divider -->
-        <div style="border-top:1px solid #e5e7eb;margin:24px 0 20px;"></div>
+        <div style="border-top:1px solid #e5e7eb;margin:20px 0 16px;"></div>
 
         <!-- Buttons -->
         <div style="display:flex;gap:12px;flex-wrap:wrap;">
           <button onclick="sangocastExitAndClear()"
-                  style="flex:1;min-width:140px;padding:14px 20px;border:2px solid #fca5a5;border-radius:10px;background:#fff7f7;color:#dc2626;font-weight:600;font-size:14px;cursor:pointer;">
+                  style="flex:1;min-width:120px;padding:clamp(10px,3vw,14px) 16px;border:2px solid #fca5a5;border-radius:10px;background:#fff7f7;color:#dc2626;font-weight:600;font-size:clamp(13px,3.5vw,14px);cursor:pointer;">
             🗑️ Exit &amp; Clear Data
           </button>
           <button onclick="sangocastContinueToWizard()"
-                  style="flex:2;min-width:160px;padding:14px 20px;border:none;border-radius:10px;background:linear-gradient(135deg,#667eea,#764ba2);color:#ffffff;font-weight:700;font-size:15px;cursor:pointer;">
+                  style="flex:2;min-width:140px;padding:clamp(10px,3vw,14px) 16px;border:none;border-radius:10px;background:linear-gradient(135deg,#667eea,#764ba2);color:#ffffff;font-weight:700;font-size:clamp(14px,4vw,15px);cursor:pointer;">
             Continue →
           </button>
         </div>
