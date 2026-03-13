@@ -1240,7 +1240,7 @@ function showSangocastWelcome() {
 
           <p style="margin:0 0 14px;">SangoCast is designed to run on most modern devices: Android phones, Windows computers, Apple devices, smart TVs, and browsers.</p>
 
-          <p style="margin:0 0 14px;">Soon, teachers and ministries will be able to open their own channels and share reading plans that follow the rhythm of their communities.</p>
+          <p style="margin:0 0 14px;">Soon, teachers and ministries will be able to open their own channels and share reaiding plans prepared under the guidance of their ministry and the spiritual direction they follow.</p>
 
           <p style="margin:0 0 14px;">The application can also work offline, quietly storing selected scripture plans on your device. For this reason, it may request some storage space.</p>
 
