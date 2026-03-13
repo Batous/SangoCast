@@ -409,71 +409,18 @@ const SangocastSetupWizard = (() => {
         margin-left: 8px;
       }
 
-      /* ─── Channel grid (2-col on wide, 1-col on mobile) ──────────────── */
-      #sangocast-setup-wizard .channel-grid {
-        display: grid;
-        grid-template-columns: repeat(2, 1fr);
-        gap: 12px;
-      }
-
-      @media (max-width: 540px) {
-        #sangocast-setup-wizard .channel-grid {
-          grid-template-columns: 1fr;
-        }
-      }
-
-      /* ─── Channel cards – text only ───────────────────────────────────── */
-      #sangocast-setup-wizard .channel-card {
-        padding: 16px;
-        border: 2px solid #e5e7eb;
-        border-radius: 12px;
-        cursor: pointer;
-        transition: all 0.2s;
-        background-color: #ffffff;
-        color: #111827 !important;
-      }
-
-      #sangocast-setup-wizard .channel-card:hover {
-        border-color: #667eea;
-        box-shadow: 0 2px 8px rgba(102, 126, 234, 0.15);
-      }
-
-      #sangocast-setup-wizard .channel-card.selected {
-        border-color: #667eea;
-        background-color: #f5f3ff;
-      }
-
-      #sangocast-setup-wizard .channel-info {
-        width: 100%;
-      }
-
-      #sangocast-setup-wizard .channel-name {
-        font-weight: 700 !important;
-        font-size: 16px !important;
-        margin-bottom: 4px !important;
-        color: #111827 !important;
-      }
-
-      #sangocast-setup-wizard .channel-id {
-        font-size: 12px !important;
-        color: #667eea !important;
-        font-family: monospace !important;
-        margin-bottom: 4px !important;
-      }
-
-      #sangocast-setup-wizard .channel-desc {
-        font-size: 13px !important;
-        color: #6b7280 !important;
-        line-height: 1.45 !important;
-      }
-
-      #sangocast-setup-wizard .channel-tradition {
-        margin-top: 6px;
-        font-size: 11px;
-        color: #9ca3af !important;
-        text-transform: uppercase;
-        letter-spacing: 0.04em;
-      }
+      /* ─── Channel card styles removed — plain text list used instead ──── */
+      /*
+      #sangocast-setup-wizard .channel-grid { ... }
+      #sangocast-setup-wizard .channel-card { ... }
+      #sangocast-setup-wizard .channel-card:hover { ... }
+      #sangocast-setup-wizard .channel-card.selected { ... }
+      #sangocast-setup-wizard .channel-info { ... }
+      #sangocast-setup-wizard .channel-name { ... }
+      #sangocast-setup-wizard .channel-id { ... }
+      #sangocast-setup-wizard .channel-desc { ... }
+      #sangocast-setup-wizard .channel-tradition { ... }
+      */
 
       /* ─── Checkboxes ──────────────────────────────────────────────────── */
       #sangocast-setup-wizard .checkbox-group {
@@ -568,10 +515,6 @@ const SangocastSetupWizard = (() => {
         
         #sangocast-setup-wizard .step-title {
           font-size: 22px;
-        }
-
-        #sangocast-setup-wizard .channel-grid {
-          grid-template-columns: 1fr;
         }
       }
     `;
@@ -838,7 +781,6 @@ const SangocastSetupWizard = (() => {
    * ÉTAPE 5: Sélection Chaîne
    */
   function getChannelHTML() {
-    // Always show ALL channels — let the user decide, no filtering by tradition or language.
     const filteredChannels = availableChannels;
 
     return `
@@ -847,19 +789,13 @@ const SangocastSetupWizard = (() => {
         Une chaîne définit votre plan de lecture, les enseignements pastoraux et les événements que vous suivez.
       </div>
 
-      <div class="channel-grid">
+      <div>
         ${filteredChannels.map(channel => `
-          <div class="channel-card ${preferences.channelId === channel.id ? 'selected' : ''}"
-               onclick="SangocastSetupWizard.selectChannel('${channel.id}')">
-            <div class="channel-info">
-              <div class="channel-name">
-                ${channel.metadata.name}
-                ${channel.metadata.featured ? '<span class="option-badge">Recommandé</span>' : ''}
-              </div>
-              <div class="channel-id">${channel.id}</div>
-              <div class="channel-desc">${channel.metadata.description || ''}</div>
-              ${channel.metadata.tradition ? `<div class="channel-tradition">${channel.metadata.tradition.replace('_', ' ')}</div>` : ''}
-            </div>
+          <div onclick="SangocastSetupWizard.selectChannel('${channel.id}')" style="margin-bottom:12px;cursor:pointer;">
+            <div><strong>${channel.metadata.name}</strong> ${channel.metadata.featured ? '<span style="color:#10b981;">(Recommandé)</span>' : ''}</div>
+            <div>ID: ${channel.id}</div>
+            <div>Description: ${channel.metadata.description || ''}</div>
+            ${channel.metadata.tradition ? `<div>Tradition: ${channel.metadata.tradition.replace(/_/g, ' ')}</div>` : ''}
           </div>
         `).join('')}
       </div>
