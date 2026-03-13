@@ -846,22 +846,8 @@ const SangocastSetupWizard = (() => {
    * ÉTAPE 5: Sélection Chaîne
    */
   function getChannelHTML() {
-    // Show channel if:
-    // - it has no tradition restriction, OR
-    // - it matches the user's tradition, OR
-    // - it is interconfessional/ecumenical (open to all), OR
-    // - no channels matched at all (show everything as last resort)
-    const OPEN = ['interconfessional', 'ecumenical'];
-    let filteredChannels = availableChannels.filter(ch =>
-      !ch.metadata.tradition ||
-      ch.metadata.tradition === preferences.tradition ||
-      OPEN.includes(ch.metadata.tradition)
-    );
-
-    // Last resort: if the filter leaves nothing, show all channels
-    if (filteredChannels.length === 0) {
-      filteredChannels = availableChannels;
-    }
+    // Always show ALL channels — let the user decide, no filtering by tradition or language.
+    const filteredChannels = availableChannels;
 
     return `
       <div class="step-title" style="font-size:26px;font-weight:700;color:#111827;margin-bottom:10px;">📺 Choisissez Votre Chaîne</div>
@@ -882,6 +868,7 @@ const SangocastSetupWizard = (() => {
               </div>
               <div class="channel-id" style="font-size:11px;color:#667eea;font-family:monospace;margin-bottom:4px;">${channel.id}</div>
               <div class="channel-desc" style="font-size:13px;color:#4b5563;line-height:1.45;">${channel.metadata.description || ''}</div>
+              ${channel.metadata.tradition ? `<div style="margin-top:6px;font-size:11px;color:#9ca3af;text-transform:uppercase;letter-spacing:0.04em;">${channel.metadata.tradition.replace('_', ' ')}</div>` : ''}
             </div>
           </div>
         `).join('')}
