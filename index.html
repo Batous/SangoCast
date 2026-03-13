@@ -915,6 +915,9 @@
       setTimeout(() => {
         container.style.animation = 'fadeIn 1s ease';
       }, 10);
+
+      // Shrink font if verse is too long to fit on screen
+      fitVerseText();
     }
 
     /**
@@ -1292,6 +1295,32 @@
     }
 
     /**
+     * Auto-shrink the verse text font until it fits within the visible content area.
+     * Starts at 48px (the CSS default) and steps down 2px at a time.
+     * Stops at 20px minimum so text never becomes unreadable.
+     * Must be called AFTER innerHTML has been set so the DOM is measurable.
+     */
+    function fitVerseText() {
+      const verseEl = document.querySelector('.verse-text');
+      const content = document.querySelector('.content');
+      if (!verseEl || !content) return;
+
+      const maxH    = content.clientHeight;
+      let fontSize  = 48;
+      verseEl.style.fontSize = fontSize + 'px';
+
+      while (
+        document.getElementById('verse-container').scrollHeight > maxH &&
+        fontSize > 20
+      ) {
+        fontSize -= 2;
+        verseEl.style.fontSize = fontSize + 'px';
+      }
+
+      console.log('📐 Verse font fitted to', fontSize + 'px');
+    }
+
+    /**
      * Display error
      */
     function displayError() {
@@ -1459,6 +1488,9 @@
     } else {
       init();
     }
+
+    // Re-fit verse text if window is resized (e.g. TV fullscreen toggle)
+    window.addEventListener('resize', fitVerseText);
   </script>
 </body>
 </html>
