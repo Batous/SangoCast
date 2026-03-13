@@ -422,65 +422,57 @@ const SangocastSetupWizard = (() => {
         }
       }
 
-      /* ─── Channel cards ───────────────────────────────────────────────── */
+      /* ─── Channel cards – text only ───────────────────────────────────── */
       #sangocast-setup-wizard .channel-card {
-        display: flex;
-        align-items: flex-start;
-        gap: 14px;
         padding: 16px;
         border: 2px solid #e5e7eb;
         border-radius: 12px;
         cursor: pointer;
         transition: all 0.2s;
-        background-color: #ffffff !important;
-        background: #ffffff !important;
+        background-color: #ffffff;
         color: #111827 !important;
       }
 
       #sangocast-setup-wizard .channel-card:hover {
         border-color: #667eea;
-        box-shadow: 0 2px 8px rgba(102,126,234,0.15);
+        box-shadow: 0 2px 8px rgba(102, 126, 234, 0.15);
       }
 
       #sangocast-setup-wizard .channel-card.selected {
         border-color: #667eea;
-        background-color: #f5f3ff !important;
-        background: #f5f3ff !important;
-      }
-
-      #sangocast-setup-wizard .channel-icon {
-        font-size: 36px;
-        width: 48px;
-        min-width: 48px;
-        text-align: center;
-        line-height: 1;
-        padding-top: 2px;
+        background-color: #f5f3ff;
       }
 
       #sangocast-setup-wizard .channel-info {
-        flex: 1;
-        min-width: 0;
+        width: 100%;
       }
 
       #sangocast-setup-wizard .channel-name {
         font-weight: 700 !important;
-        font-size: 15px !important;
-        margin-bottom: 3px !important;
+        font-size: 16px !important;
+        margin-bottom: 4px !important;
         color: #111827 !important;
-        line-height: 1.3;
       }
 
       #sangocast-setup-wizard .channel-id {
-        font-size: 11px !important;
+        font-size: 12px !important;
         color: #667eea !important;
         font-family: monospace !important;
-        margin-bottom: 5px !important;
+        margin-bottom: 4px !important;
       }
 
       #sangocast-setup-wizard .channel-desc {
         font-size: 13px !important;
-        color: #4b5563 !important;
+        color: #6b7280 !important;
         line-height: 1.45 !important;
+      }
+
+      #sangocast-setup-wizard .channel-tradition {
+        margin-top: 6px;
+        font-size: 11px;
+        color: #9ca3af !important;
+        text-transform: uppercase;
+        letter-spacing: 0.04em;
       }
 
       /* ─── Checkboxes ──────────────────────────────────────────────────── */
@@ -858,24 +850,22 @@ const SangocastSetupWizard = (() => {
       <div class="channel-grid">
         ${filteredChannels.map(channel => `
           <div class="channel-card ${preferences.channelId === channel.id ? 'selected' : ''}"
-               onclick="SangocastSetupWizard.selectChannel('${channel.id}')"
-               style="background:#ffffff;border:2px solid ${preferences.channelId === channel.id ? '#667eea' : '#e5e7eb'};border-radius:12px;padding:16px;display:flex;align-items:flex-start;gap:14px;cursor:pointer;">
-            <div class="channel-icon" style="font-size:32px;min-width:40px;text-align:center;">${getChannelIcon(channel.type)}</div>
-            <div class="channel-info" style="flex:1;min-width:0;">
-              <div class="channel-name" style="font-weight:700;font-size:15px;margin-bottom:3px;color:#111827 !important;">
-                <span style="color:#111827;">${channel.metadata.name}</span>
-                ${channel.metadata.featured ? '<span style="display:inline-block;padding:2px 8px;background:#10b981;color:#ffffff;border-radius:10px;font-size:10px;font-weight:700;text-transform:uppercase;margin-left:6px;">Recommandé</span>' : ''}
+               onclick="SangocastSetupWizard.selectChannel('${channel.id}')">
+            <div class="channel-info">
+              <div class="channel-name">
+                ${channel.metadata.name}
+                ${channel.metadata.featured ? '<span class="option-badge">Recommandé</span>' : ''}
               </div>
-              <div class="channel-id" style="font-size:11px;color:#667eea;font-family:monospace;margin-bottom:4px;">${channel.id}</div>
-              <div class="channel-desc" style="font-size:13px;color:#4b5563;line-height:1.45;">${channel.metadata.description || ''}</div>
-              ${channel.metadata.tradition ? `<div style="margin-top:6px;font-size:11px;color:#9ca3af;text-transform:uppercase;letter-spacing:0.04em;">${channel.metadata.tradition.replace('_', ' ')}</div>` : ''}
+              <div class="channel-id">${channel.id}</div>
+              <div class="channel-desc">${channel.metadata.description || ''}</div>
+              ${channel.metadata.tradition ? `<div class="channel-tradition">${channel.metadata.tradition.replace('_', ' ')}</div>` : ''}
             </div>
           </div>
         `).join('')}
       </div>
 
-      <div style="margin-top: 20px; padding: 16px; background: #f9fafb; border-radius: 8px; font-size: 14px; color: #4b5563 !important;">
-        <strong style="color: #111827 !important;">💡 Conseil:</strong> Vous pourrez changer de chaîne à tout moment dans les paramètres.
+      <div style="margin-top:20px;padding:16px;background:#f9fafb;border-radius:8px;font-size:14px;color:#4b5563;">
+        <strong style="color:#111827;">💡 Conseil:</strong> Vous pourrez changer de chaîne à tout moment dans les paramètres.
       </div>
     `;
   }
