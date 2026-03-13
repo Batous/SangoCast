@@ -1205,20 +1205,103 @@ function getBibleHTML() {
   };
 })();
 
-// Auto-initialisation si pas encore configuré
-if (document.readyState === 'loading') {
-  document.addEventListener('DOMContentLoaded', () => {
-    const configured = localStorage.getItem('sangocast_configured');
-    if (!configured || configured !== 'true') {
-      SangocastSetupWizard.init();
-    }
-  });
-} else {
-  const configured = localStorage.getItem('sangocast_configured');
-  if (!configured || configured !== 'true') {
-    SangocastSetupWizard.init();
-  }
+// ─── Welcome / Early Testers screen ────────────────────────────────────────
+// Shown before the wizard. Two paths:
+//   • Continue  → dismisses welcome, starts wizard
+//   • Exit & Clear → wipes all SangoCast data, removes screen
+// ────────────────────────────────────────────────────────────────────────────
+
+function showSangocastWelcome() {
+
+  // Inject the welcome overlay
+  const el = document.createElement('div');
+  el.id = 'sangocast-welcome';
+  el.innerHTML = `
+    <div style="position:fixed;top:0;left:0;right:0;bottom:0;z-index:999998;background:rgba(0,0,0,0.55);backdrop-filter:blur(4px);display:flex;align-items:center;justify-content:center;padding:16px;">
+      <div style="background:#ffffff;border-radius:20px;max-width:640px;width:100%;max-height:90vh;overflow-y:auto;padding:36px 32px 28px;box-shadow:0 24px 64px rgba(0,0,0,0.3);">
+
+        <!-- Header -->
+        <div style="text-align:center;margin-bottom:24px;">
+          <div style="font-size:36px;margin-bottom:8px;">📺</div>
+          <div style="font-size:22px;font-weight:800;color:#1f2937;line-height:1.3;">SangoCast</div>
+          <div style="font-size:13px;font-weight:600;color:#667eea;letter-spacing:0.08em;text-transform:uppercase;margin-top:4px;">Early Testers Edition</div>
+        </div>
+
+        <!-- Body text -->
+        <div style="font-size:15px;color:#374151;line-height:1.8;">
+
+          <p style="margin:0 0 14px;">Beloved in the Lord, welcome to <strong>SangoCast</strong> — the Early Testers Edition.</p>
+
+          <p style="margin:0 0 14px;">In simple terms, <strong>SangoCast.live</strong> is a clock app to be placed in the home — yet instead of merely counting hours, it lets the Word of God mark the moments of the day.</p>
+
+          <p style="margin:0 0 14px;">Scriptures appear gently, every ten minutes, one after another, as though the day itself were turning the pages of the Bible.</p>
+
+          <p style="margin:0 0 14px;">You are among the first invited to try it, to explore it, and to help shape it through your feedback.</p>
+
+          <p style="margin:0 0 14px;">SangoCast is designed to run on most modern devices: Android phones, Windows computers, Apple devices, smart TVs, and browsers.</p>
+
+          <p style="margin:0 0 14px;">Soon, teachers and ministries will be able to open their own channels and share reading plans that follow the rhythm of their communities.</p>
+
+          <p style="margin:0 0 14px;">The application can also work offline, quietly storing selected scripture plans on your device. For this reason, it may request some storage space.</p>
+
+          <p style="margin:0 0 14px;">If you ever wish to remove the application and clear its data, you may do so using the button below.</p>
+
+          <p style="margin:0 0 20px;">If you are willing to join this early journey and help test SangoCast, please click <strong>Continue</strong>.</p>
+
+          <p style="margin:0 0 6px;font-weight:600;color:#1f2937;">Above all, we welcome your voice.</p>
+          <p style="margin:0 0 4px;color:#4b5563;">Send your feedback at any time.</p>
+          <p style="margin:0 0 4px;color:#4b5563;">Feedback line (24/7): <strong style="color:#1f2937;">+2764 897 8490</strong></p>
+          <p style="margin:14px 0 0;font-style:italic;color:#6b7280;">With gratitude, Batous Kabuika</p>
+
+        </div>
+
+        <!-- Divider -->
+        <div style="border-top:1px solid #e5e7eb;margin:24px 0 20px;"></div>
+
+        <!-- Buttons -->
+        <div style="display:flex;gap:12px;flex-wrap:wrap;">
+          <button onclick="sangocastExitAndClear()"
+                  style="flex:1;min-width:140px;padding:14px 20px;border:2px solid #fca5a5;border-radius:10px;background:#fff7f7;color:#dc2626;font-weight:600;font-size:14px;cursor:pointer;">
+            🗑️ Exit &amp; Clear Data
+          </button>
+          <button onclick="sangocastContinueToWizard()"
+                  style="flex:2;min-width:160px;padding:14px 20px;border:none;border-radius:10px;background:linear-gradient(135deg,#667eea,#764ba2);color:#ffffff;font-weight:700;font-size:15px;cursor:pointer;">
+            Continue →
+          </button>
+        </div>
+
+      </div>
+    </div>
+  `;
+  document.body.appendChild(el);
 }
+
+function sangocastContinueToWizard() {
+  const welcome = document.getElementById('sangocast-welcome');
+  if (welcome) welcome.remove();
+  SangocastSetupWizard.init();
+}
+
+function sangocastExitAndClear() {
+  // Wipe all SangoCast keys from localStorage
+  Object.keys(localStorage)
+    .filter(k => k.startsWith('sangocast'))
+    .forEach(k => localStorage.removeItem(k));
+  const welcome = document.getElementById('sangocast-welcome');
+  if (welcome) welcome.remove();
+  console.log('🗑️ SangoCast data cleared.');
+}
+
+// ─── Auto-start ──────────────────────────────────────────────────────────────
+// Always show the welcome screen first.
+// It then decides whether to launch the wizard (Continue) or exit (Clear).
+// ─────────────────────────────────────────────────────────────────────────────
+if (document.readyState === 'loading') {
+  document.addEventListener('DOMContentLoaded', showSangocastWelcome);
+} else {
+  showSangocastWelcome();
+}
+
 
 // Export pour modules
 if (typeof module !== 'undefined' && module.exports) {
