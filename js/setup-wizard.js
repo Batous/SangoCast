@@ -932,7 +932,7 @@ const SangocastSetupWizard = (() => {
     });
   }
 
-
+  function getChannelIcon(type) {
     const icons = {
       'SCR': '📖',
       'LEC': '📅',
