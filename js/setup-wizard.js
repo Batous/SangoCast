@@ -1232,7 +1232,7 @@ function showSangocastWelcome() {
 
           <p style="margin:0 0 14px;">Beloved in the Lord, welcome to <strong>SangoCast</strong> — the Early Testers Edition.</p>
 
-          <p style="margin:0 0 14px;">In simple terms, <strong>SangoCast.live</strong> is a clock app to be placed in the home — yet instead of merely counting hours, it lets the Word of God mark the moments of the day.</p>
+          <p style="margin:0 0 14px;">In simple terms, <strong>SangoCast.live</strong> is a clock app for homes, offices, schools, and public displays — yet instead of merely counting hours, it lets the Word of God mark the moments of the day.</p>
 
           <p style="margin:0 0 14px;">Scriptures appear gently, every ten minutes, one after another, as though the day itself were turning the pages of the Bible.</p>
 
