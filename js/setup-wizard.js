@@ -1232,7 +1232,7 @@ function showSangocastWelcome() {
 
           <p style="margin:0 0 14px;">Beloved in the Lord, welcome to <strong>SangoCast</strong> — the Early Testers Edition.</p>
 
-          <p style="margin:0 0 14px;">In simple terms, <strong>SangoCast.live</strong> is a clock app for homes, offices, schools, and public displays — yet instead of merely counting hours, it lets the Word of God mark the moments of the day.</p>
+          <p style="margin:0 0 14px;">In simple terms, <strong>SangoCast.live</strong> is a clock app to be placed in the home — yet instead of merely counting hours, it lets the Word of God mark the moments of the day.</p>
 
           <p style="margin:0 0 14px;">Scriptures appear gently, every ten minutes, one after another, as though the day itself were turning the pages of the Bible.</p>
 
@@ -1240,7 +1240,7 @@ function showSangocastWelcome() {
 
           <p style="margin:0 0 14px;">SangoCast is designed to run on most modern devices: Android phones, Windows computers, Apple devices, smart TVs, and browsers.</p>
 
-          <p style="margin:0 0 14px;">Soon, teachers and ministries will be able to open their own channels and share reaiding plans prepared under the guidance of their ministry and the spiritual direction they follow.</p>
+          <p style="margin:0 0 14px;">Soon, teachers and ministries will be able to open their own channels and share reading plans that follow the rhythm of their communities.</p>
 
           <p style="margin:0 0 14px;">The application can also work offline, quietly storing selected scripture plans on your device. For this reason, it may request some storage space.</p>
 
@@ -1293,13 +1293,19 @@ function sangocastExitAndClear() {
 }
 
 // ─── Auto-start ──────────────────────────────────────────────────────────────
-// Always show the welcome screen first.
-// It then decides whether to launch the wizard (Continue) or exit (Clear).
+// Show the welcome screen only on first run (not yet configured).
+// On subsequent loads the app initialises normally without interruption.
 // ─────────────────────────────────────────────────────────────────────────────
 if (document.readyState === 'loading') {
-  document.addEventListener('DOMContentLoaded', showSangocastWelcome);
+  document.addEventListener('DOMContentLoaded', () => {
+    if (localStorage.getItem('sangocast_configured') !== 'true') {
+      showSangocastWelcome();
+    }
+  });
 } else {
-  showSangocastWelcome();
+  if (localStorage.getItem('sangocast_configured') !== 'true') {
+    showSangocastWelcome();
+  }
 }
 
 
