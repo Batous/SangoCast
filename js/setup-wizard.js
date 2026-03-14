@@ -952,16 +952,39 @@ const SangocastSetupWizard = (() => {
       localStorage.setItem('sangocast_audio_hours',    JSON.stringify(preferences.audioHours));
       localStorage.setItem('sangocast_install_date',   preferences.installDate);
       localStorage.setItem('sangocast_configured',     'true');
-      console.log('✅ Configuration sauvegardée / saved:', preferences);
+      // Verify the write actually stuck before reporting success
+      const verified = localStorage.getItem('sangocast_configured') === 'true';
+      if (verified) {
+        console.log('✅ Configuration sauvegardée / saved:', preferences);
+      } else {
+        console.error('⚠️ Write appeared to succeed but read-back failed.');
+      }
+      return verified;
     } catch (e) {
       console.error('⚠️ localStorage unavailable / indisponible:', e);
+      return false;
     }
   }
 
   // ─── Navigation ───────────────────────────────────────────────────────────
 
   function nextStep() {
-    if (currentStep === STEPS.DOWNLOAD) { closeWizard(); window.location.reload(); return; }
+    if (currentStep === STEPS.DOWNLOAD) {
+      const saved = localStorage.getItem('sangocast_configured') === 'true';
+      if (!saved) {
+        const completeEl = document.getElementById('download-complete');
+        if (completeEl) {
+          completeEl.innerHTML += `<p style="color:#dc2626;margin-top:12px;font-size:14px;">
+            ⚠️ Your browser is blocking storage — SangoCast cannot save your setup.<br>
+            Try a different browser, disable private/incognito mode, or check your privacy settings.
+          </p>`;
+        }
+        return; // Do NOT reload — avoids the welcome screen loop
+      }
+      closeWizard();
+      window.location.reload();
+      return;
+    }
     if (!validateStep()) return;
     showStep(currentStep + 1);
   }
