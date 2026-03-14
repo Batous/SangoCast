@@ -1053,20 +1053,20 @@ function showSangocastWelcome() {
         <!-- Body text -->
         <div class="intro-text-div" style="font-size:clamp(14px,3.8vw,15px);color:#374151;line-height:1.8;word-break:break-word;overflow-wrap:break-word;">
 <p style="margin:14px 0 14px;color:#b00000;font-weight:700;">
-⚠ Early Testing Notice: Please DO NOT share this link, code, or concept during the testing period. Public Testing in 4 weeks.</p>
+⚠ Early Testing Notice: Please DO NOT share this link, code, or concept during the testing period. Public Testing coming in 2 weeks.</p>
           <p style="margin:0 0 14px;">Beloved in the Lord, welcome to <strong>SangoCast</strong> — the Early Testers Edition.</p>
 
           <p style="margin:0 0 14px;">In simple terms, <strong>SangoCast.live</strong> is a clock app to be placed in the home — yet instead of merely counting hours, it lets the Word of God mark the moments of the day.</p>
 
-          <p style="margin:0 0 14px;">Scriptures appear gently, every ten minutes, one after another, as though the day itself were turning the pages of the Bible.</p>
+          <p style="margin:0 0 14px;">Scriptures appear gently, one after another, as though the day itself were turning the pages of the Bible.</p>
 
           <p style="margin:0 0 14px;">You are among the first invited to try it, to explore it, and to help shape it through your feedback.</p>
 
           <p style="margin:0 0 14px;">SangoCast is designed to run on most modern devices: Android phones, Windows computers, Apple devices, smart TVs, and browsers.</p>
 
-          <p style="margin:0 0 14px;">Soon, teachers and ministries will be able to open their own channels and share reading plans that follow the rhythm of their communities.</p>
+          <p style="margin:0 0 14px;">Soon, teachers and ministries will be able to..... ( let's keep the suprise for next week).</p>
 
-          <p style="margin:0 0 14px;">The application can also work offline, quietly storing selected scripture plans on your device. For this reason, it may request some storage space.</p>
+          <p style="margin:0 0 14px;">The application can also offer much more features. For this reason, it may request some storage space.</p>
 
           <p style="margin:0 0 14px;">If you ever wish to remove the application and clear its data, you may do so using the button below.</p>
 
@@ -1090,7 +1090,7 @@ function showSangocastWelcome() {
           <button onclick="sangocastExitAndClear()"
                   aria-label="Exit and clear SangoCast data"
                   style="flex:1;min-width:120px;padding:clamp(10px,3vw,14px) 16px;border:2px solid #fca5a5;border-radius:10px;background:#fff7f7;color:#dc2626;font-weight:600;font-size:clamp(13px,3.5vw,14px);cursor:pointer;">
-            🗑️ ${bi('Quitter & Effacer', 'Exit & Clear')}
+            🗑️ Exit & Clear
           </button>
           <button onclick="sangocastContinueToWizard()"
                   aria-label="Continue to setup wizard"
