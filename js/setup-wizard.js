@@ -1038,50 +1038,53 @@ function showSangocastWelcome() {
   el.id = 'sangocast-welcome';
   el.innerHTML = `
     <div style="position:fixed;top:0;left:0;right:0;bottom:0;z-index:999998;background:rgba(0,0,0,0.55);backdrop-filter:blur(4px);display:flex;align-items:center;justify-content:center;padding:12px;"
-         role="dialog" aria-modal="true" aria-label="SangoCast Welcome">
-      <div style="background:#ffffff;border-radius:20px;max-width:640px;width:100%;max-height:92vh;overflow-y:auto;padding:clamp(20px,5vw,36px) clamp(16px,4vw,32px) clamp(16px,4vw,28px);box-shadow:0 24px 64px rgba(0,0,0,0.3);">
+     role="dialog" aria-modal="true" aria-label="SangoCast Welcome">
+  <div style="background:#ffffff;border-radius:20px;max-width:640px;width:100%;max-height:92vh;overflow-y:auto;padding:clamp(20px,5vw,36px) clamp(16px,4vw,32px) clamp(16px,4vw,28px);box-shadow:0 24px 64px rgba(0,0,0,0.3);">
 
-        <!-- Header -->
-        <div style="text-align:center;margin-bottom:20px;">
-          <div style="font-size:clamp(28px,8vw,36px);margin-bottom:8px;" aria-hidden="true">📺</div>
-          <div style="font-size:clamp(18px,5vw,22px);font-weight:800;color:#1f2937;line-height:1.3;">SangoCast</div>
-          <div style="font-size:clamp(11px,3vw,13px);font-weight:600;color:#667eea;letter-spacing:0.08em;text-transform:uppercase;margin-top:4px;">
-            ${bi('Édition des Testeurs Précoces', 'Early Testers Edition')}
-          </div>
-        </div>
+    <!-- Header -->
+    <div style="text-align:center;margin-bottom:20px;">
+      <div style="font-size:clamp(28px,8vw,36px);margin-bottom:8px;" aria-hidden="true">📺</div>
+      <div style="font-size:clamp(18px,5vw,22px);font-weight:800;color:#1f2937;line-height:1.3;">SangoCast</div>
+      <div style="font-size:clamp(11px,3vw,13px);font-weight:600;color:#667eea;letter-spacing:0.08em;text-transform:uppercase;margin-top:4px;">
+        Early Testers Edition
+      </div>
+    </div>
 
-        <!-- Body text -->
-        <div class="intro-text-div" style="font-size:clamp(14px,3.8vw,15px);color:#374151;line-height:1.8;word-break:break-word;overflow-wrap:break-word;">
-<p style="margin:14px 0 14px;color:#b00000;font-weight:700;">
-⚠ Early Testing Notice: Please DO NOT share this link, code, or concept during the testing period. Public Testing coming in 2 weeks.</p>
-          <p style="margin:0 0 14px;">Beloved in the Lord, welcome to <strong>SangoCast</strong> — the Early Testers Edition.</p>
+    <!-- Body text -->
+    <div class="intro-text-div" style="font-size:clamp(14px,3.8vw,15px);color:#374151;line-height:1.8;word-break:break-word;overflow-wrap:break-word;">
+      <p style="margin:14px 0 14px;color:#b00000;font-weight:700;">
+        ⚠ Early Testing Notice: Please DO NOT share this link, code, or concept during the testing period. Public Testing coming in 2 weeks.
+      </p>
+      
+      <p style="margin:0 0 14px;">Beloved in the Lord, welcome to <strong>SangoCast</strong> — Early Testers Edition.</p>
 
-          <p style="margin:0 0 14px;">In simple terms, <strong>SangoCast.live</strong> is a clock app to be placed in the home — yet instead of merely counting hours, it lets the Word of God mark the moments of the day.</p>
+      <p style="margin:0 0 14px;">In simple terms, <strong>SangoCast.live</strong> is a clock app to be placed in the home — yet instead of merely counting hours, it lets the Word of God mark the moments of the day.</p>
 
-          <p style="margin:0 0 14px;">Scriptures appear gently, one after another, as though the day itself were turning the pages of the Bible.</p>
+      <p style="margin:0 0 14px;">Scriptures appear gently, one after another, as though the day itself were turning the pages of the Bible.</p>
 
-          <p style="margin:0 0 14px;">You are among the first invited to try it, to explore it, and to help shape it through your feedback.</p>
+      <p style="margin:0 0 14px;">You are among the first invited to try it, to explore it, and to help shape it through your feedback.</p>
 
-          <p style="margin:0 0 14px;">SangoCast is designed to run on most modern devices: Android phones, Windows computers, Apple devices, smart TVs, and browsers.</p>
+      <p style="margin:0 0 14px;">SangoCast is designed to run on most modern devices: Android phones, Windows computers, Apple devices, smart TVs, and browsers.</p>
 
-          <p style="margin:0 0 14px;">Soon, teachers and ministries will be able to..... ( let's keep the suprise for next week).</p>
+      <p style="margin:0 0 14px;">Soon, teachers and ministries will be able to..... ( let's keep the surprise for next week).</p>
 
-          <p style="margin:0 0 14px;">The application can also offer much more features. For this reason, it may request some storage space.</p>
+      <p style="margin:0 0 14px;">The application can also offer much more features. For this reason, it may request some storage space.</p>
 
-          <p style="margin:0 0 14px;">If you ever wish to remove the application and clear its data, you may do so using the button below.</p>
+      <p style="margin:0 0 14px;">If you ever wish to remove the application and clear its data, you may do so using the button below.</p>
 
-          <p style="margin:0 0 20px;">If you are willing to join this early journey and help test SangoCast, please click <strong>Continue</strong>.</p>
+      <p style="margin:0 0 20px;">If you are willing to join this early journey and help test SangoCast, please click <strong>Continue</strong>.</p>
 
-          <p style="margin:0 0 6px;font-weight:600;color:#1f2937;">Above all, we welcome your voice.</p>
-          <p style="margin:0 0 4px;color:#4b5563;">Send your feedback at any time.</p>
-          <p style="margin:0 0 4px;color:#4b5563;">
-            Feedback line (24/7):
-            <strong style="color:#1f2937;">+2764 897 8490</strong>
-          </p>
-          <p style="margin:14px 0 0;font-style:italic;color:#6b7280;">With gratitude, Batous Kabuika</p>
+      <p style="margin:0 0 6px;font-weight:600;color:#1f2937;">Above all, we welcome your voice.</p>
+      <p style="margin:0 0 4px;color:#4b5563;">Send your feedback at any time.</p>
+      <p style="margin:0 0 4px;color:#4b5563;">
+        Feedback line (24/7):
+        <strong style="color:#1f2937;">+2764 897 8490</strong>
+      </p>
+      <p style="margin:14px 0 0;font-style:italic;color:#6b7280;">With gratitude, Batous Kabuika</p>
 
-        </div>
-
+    </div>
+  </div>
+</div>
         <!-- Divider -->
         <div style="border-top:1px solid #e5e7eb;margin:20px 0 16px;"></div>
 
