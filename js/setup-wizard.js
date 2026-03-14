@@ -1084,7 +1084,7 @@ function showSangocastWelcome() {
 
     </div>
   </div>
-</div>
+
         <!-- Divider -->
         <div style="border-top:1px solid #e5e7eb;margin:20px 0 16px;"></div>
 
@@ -1104,6 +1104,7 @@ function showSangocastWelcome() {
 
       </div>
     </div>
+ </div>
   `;
   document.body.appendChild(el);
   applyMobileClass();
