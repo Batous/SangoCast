@@ -1102,7 +1102,6 @@ const SangocastSetupWizard = (() => {
   `;
   document.body.appendChild(el);
   applyMobileClass();
-}
 
 function sangocastContinueToWizard() {
   const welcome = document.getElementById('sangocast-welcome');
