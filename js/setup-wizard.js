@@ -1052,32 +1052,33 @@ function showSangocastWelcome() {
 
         <!-- Body text -->
         <div class="intro-text-div" style="font-size:clamp(14px,3.8vw,15px);color:#374151;line-height:1.8;word-break:break-word;overflow-wrap:break-word;">
+<p style="margin:14px 0 14px;color:#b00000;font-weight:700;">
+⚠ Early Testing Notice: Please DO NOT share this link, code, or concept during the testing period. Public Testing in 4 weeks.</p>
+          <p style="margin:0 0 14px;">Beloved in the Lord, welcome to <strong>SangoCast</strong> — the Early Testers Edition.</p>
 
-          <p style="margin:0 0 14px;">${bi('Bien-aimé(e) dans le Seigneur, bienvenue dans <strong>SangoCast</strong> — l\'Édition des Testeurs Précoces.', 'Beloved in the Lord, welcome to <strong>SangoCast</strong> — the Early Testers Edition.')}</p>
+          <p style="margin:0 0 14px;">In simple terms, <strong>SangoCast.live</strong> is a clock app to be placed in the home — yet instead of merely counting hours, it lets the Word of God mark the moments of the day.</p>
 
-          <p style="margin:0 0 14px;">${bi('En termes simples, <strong>SangoCast.live</strong> est une application-horloge à poser dans le foyer — mais au lieu de simplement compter les heures, elle laisse la Parole de Dieu marquer les moments de la journée.', 'In simple terms, <strong>SangoCast.live</strong> is a clock app to be placed in the home — yet instead of merely counting hours, it lets the Word of God mark the moments of the day.')}</p>
+          <p style="margin:0 0 14px;">Scriptures appear gently, every ten minutes, one after another, as though the day itself were turning the pages of the Bible.</p>
 
-          <p style="margin:0 0 14px;">${bi('Les Écritures apparaissent doucement, toutes les dix minutes, l\'une après l\'autre, comme si la journée elle-même tournait les pages de la Bible.', 'Scriptures appear gently, every ten minutes, one after another, as though the day itself were turning the pages of the Bible.')}</p>
+          <p style="margin:0 0 14px;">You are among the first invited to try it, to explore it, and to help shape it through your feedback.</p>
 
-          <p style="margin:0 0 14px;">${bi('Vous êtes parmi les premiers invités à l\'essayer, à l\'explorer, et à l\'aider à prendre forme grâce à vos retours.', 'You are among the first invited to try it, to explore it, and to help shape it through your feedback.')}</p>
+          <p style="margin:0 0 14px;">SangoCast is designed to run on most modern devices: Android phones, Windows computers, Apple devices, smart TVs, and browsers.</p>
 
-          <p style="margin:0 0 14px;">${bi('SangoCast est conçu pour fonctionner sur la plupart des appareils modernes : téléphones Android, ordinateurs Windows, appareils Apple, téléviseurs intelligents et navigateurs.', 'SangoCast is designed to run on most modern devices: Android phones, Windows computers, Apple devices, smart TVs, and browsers.')}</p>
+          <p style="margin:0 0 14px;">Soon, teachers and ministries will be able to open their own channels and share reading plans that follow the rhythm of their communities.</p>
 
-          <p style="margin:0 0 14px;">${bi('Bientôt, les enseignants et les ministères pourront ouvrir leurs propres chaînes et partager des plans de lecture suivant le rythme de leurs communautés.', 'Soon, teachers and ministries will be able to open their own channels and share reading plans that follow the rhythm of their communities.')}</p>
+          <p style="margin:0 0 14px;">The application can also work offline, quietly storing selected scripture plans on your device. For this reason, it may request some storage space.</p>
 
-          <p style="margin:0 0 14px;">${bi('L\'application peut également fonctionner hors-ligne, en stockant discrètement les plans de lecture sélectionnés sur votre appareil. Pour cette raison, elle peut demander un peu d\'espace de stockage.', 'The application can also work offline, quietly storing selected scripture plans on your device. For this reason, it may request some storage space.')}</p>
+          <p style="margin:0 0 14px;">If you ever wish to remove the application and clear its data, you may do so using the button below.</p>
 
-          <p style="margin:0 0 14px;">${bi('Si vous souhaitez supprimer l\'application et effacer ses données, vous pouvez le faire en utilisant le bouton ci-dessous.', 'If you ever wish to remove the application and clear its data, you may do so using the button below.')}</p>
+          <p style="margin:0 0 20px;">If you are willing to join this early journey and help test SangoCast, please click <strong>Continue</strong>.</p>
 
-          <p style="margin:0 0 20px;">${bi('Si vous êtes prêt(e) à rejoindre ce voyage et à aider à tester SangoCast, cliquez sur <strong>Continuer</strong>.', 'If you are willing to join this early journey and help test SangoCast, please click <strong>Continue</strong>.')}</p>
-
-          <p style="margin:0 0 6px;font-weight:600;color:#1f2937;">${bi('Avant tout, nous accueillons votre voix.', 'Above all, we welcome your voice.')}</p>
-          <p style="margin:0 0 4px;color:#4b5563;">${bi('Envoyez vos commentaires à tout moment.', 'Send your feedback at any time.')}</p>
+          <p style="margin:0 0 6px;font-weight:600;color:#1f2937;">Above all, we welcome your voice.</p>
+          <p style="margin:0 0 4px;color:#4b5563;">Send your feedback at any time.</p>
           <p style="margin:0 0 4px;color:#4b5563;">
-            ${bi('Ligne de retour (24h/24) :', 'Feedback line (24/7):')}
+            Feedback line (24/7):
             <strong style="color:#1f2937;">+2764 897 8490</strong>
           </p>
-          <p style="margin:14px 0 0;font-style:italic;color:#6b7280;">${bi('Avec gratitude, Batous Kabuika', 'With gratitude, Batous Kabuika')}</p>
+          <p style="margin:14px 0 0;font-style:italic;color:#6b7280;">With gratitude, Batous Kabuika</p>
 
         </div>
 
